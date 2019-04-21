@@ -2,6 +2,8 @@ package com.projectmanager.projectmanagerservice.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -10,9 +12,32 @@ import javax.persistence.Table;
 public class ParentTask {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="parent_id")
 	Long parentId;
 	
 	@Column(name="parent_task")
 	String parentTask;
+	
+	public ParentTask() {}
+	
+	public ParentTask(String parentTask) {
+		this.parentTask = parentTask;
+	}
+
+	public Long getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(Long parentId) {
+		this.parentId = parentId;
+	}
+
+	public String getParentTask() {
+		return parentTask;
+	}
+
+	public void setParentTask(String parentTask) {
+		this.parentTask = parentTask;
+	}
 }

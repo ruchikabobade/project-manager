@@ -10,12 +10,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import com.projectmanager.projectmanagerservice.UserTest;
+import com.projectmanager.projectmanagerservice.ProjectManagerTest;
 import com.projectmanager.projectmanagerservice.entity.User;
 import com.projectmanager.projectmanagerservice.repository.UserRepository;
 
 @RunWith(MockitoJUnitRunner.Silent.class)
-public class UserDaoTests extends UserTest {
+public class UserDaoTests extends ProjectManagerTest {
 
 	@InjectMocks
 	private UserDao userDao;

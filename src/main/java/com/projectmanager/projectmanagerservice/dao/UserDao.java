@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import com.projectmanager.projectmanagerservice.entity.User;
 import com.projectmanager.projectmanagerservice.repository.UserRepository;
 

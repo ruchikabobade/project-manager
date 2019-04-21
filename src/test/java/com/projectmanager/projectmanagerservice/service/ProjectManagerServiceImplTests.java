@@ -10,18 +10,28 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import com.projectmanager.projectmanagerservice.UserTest;
+import com.projectmanager.projectmanagerservice.ProjectManagerTest;
+import com.projectmanager.projectmanagerservice.dao.ProjectDao;
+import com.projectmanager.projectmanagerservice.dao.TaskDao;
 import com.projectmanager.projectmanagerservice.dao.UserDao;
+import com.projectmanager.projectmanagerservice.entity.Project;
+import com.projectmanager.projectmanagerservice.entity.Task;
 import com.projectmanager.projectmanagerservice.entity.User;
 
 @RunWith(MockitoJUnitRunner.Silent.class)
-public class ProjectManagerServiceImplTests extends UserTest {
+public class ProjectManagerServiceImplTests extends ProjectManagerTest {
 	
 	@InjectMocks
 	private ProjectManagerServiceImpl service;
 	
 	@Mock
 	private UserDao userDao;
+	
+	@Mock
+	private ProjectDao projectDao;
+	
+	@Mock
+	private TaskDao taskDao;
 
 	@Test
 	public void test_addUser() {
@@ -60,4 +70,81 @@ public class ProjectManagerServiceImplTests extends UserTest {
 		Assert.assertNotNull(output);
 		Assert.assertEquals(users.size(), output.size());	
 	}
+	
+	@Test
+	public void test_addProject() {
+		Project projectResponse = getProjectResponse();
+		Mockito.when(projectDao.addProject(projectResponse)).thenReturn(projectResponse);
+		Project output = service.addProject(projectResponse);
+		Assert.assertNotNull(output);
+		Assert.assertEquals(projectResponse.getProject(), output.getProject());	
+	}
+	
+
+	@Test
+	public void test_updateProject() {
+		Project projectResponse = getProjectResponse();
+		Mockito.when(projectDao.updateProject(projectResponse)).thenReturn(projectResponse);
+		Project output = service.updateProject(projectResponse);
+		Assert.assertNotNull(output);
+		Assert.assertEquals(projectResponse.getProject(), output.getProject());	
+	}
+	
+
+	@Test
+	public void test_suspendProject() {
+		Mockito.when(projectDao.suspendProject(projectId)).thenReturn(successMsg);
+		String output = service.suspendProject(projectId);
+		Assert.assertNotNull(output);
+		Assert.assertEquals(successMsg, output);	
+	}
+	
+
+	@Test
+	public void test_viewProject() {
+		List<Project> projects = getListOfProjects();
+		Mockito.when(projectDao.viewProject()).thenReturn(projects);
+		List<Project> output =service.viewProject();
+		Assert.assertNotNull(output);
+		Assert.assertEquals(projects.size(), output.size());	
+	}
+	
+	@Test
+	public void test_addTask() {
+		Task taskResponse = getTaskResponse();
+		Mockito.when(taskDao.addTask(taskResponse)).thenReturn(taskResponse);
+		Task output = service.addTask(taskResponse);
+		Assert.assertNotNull(output);
+		Assert.assertEquals(taskResponse.getTask(), output.getTask());	
+	}
+	
+
+	@Test
+	public void test_updateTask() {
+		Task taskResponse = getTaskResponse();
+		Mockito.when(taskDao.updateTask(taskResponse)).thenReturn(taskResponse);
+		Task output = service.updateTask(taskResponse);
+		Assert.assertNotNull(output);
+		Assert.assertEquals(taskResponse.getTask(), output.getTask());	
+	}
+	
+
+	@Test
+	public void test_endTask() {
+		Mockito.when(taskDao.endTask(taskId)).thenReturn(successMsg);
+		String output = service.endTask(taskId);
+		Assert.assertNotNull(output);
+		Assert.assertEquals(successMsg, output);	
+	}
+	
+
+	@Test
+	public void test_viewTask() {
+		List<Task> tasks = getListOfTasks();
+		Mockito.when(taskDao.viewTask()).thenReturn(tasks);
+		List<Task> output = service.viewTask();
+		Assert.assertNotNull(output);
+		Assert.assertEquals(tasks.size(), output.size());	
+	}
 }
+
