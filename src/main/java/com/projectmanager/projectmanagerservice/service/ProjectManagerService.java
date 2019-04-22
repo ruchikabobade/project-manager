@@ -5,18 +5,21 @@ import java.util.List;
 import com.projectmanager.projectmanagerservice.entity.Project;
 import com.projectmanager.projectmanagerservice.entity.Task;
 import com.projectmanager.projectmanagerservice.entity.User;
+import com.projectmanager.projectmanagerservice.model.ProjectRecord;
+import com.projectmanager.projectmanagerservice.model.ProjectManagerRecord;
+import com.projectmanager.projectmanagerservice.model.UserRecord;
 
 public interface ProjectManagerService {
 
-	public User addUser(User user);
+	public User addUser(UserRecord user);
 	
-	public User updateUser(User user);
+	public User updateUser(ProjectManagerRecord user);
 	
 	public String deleteUser(Long userId);
 	
 	public List<User> viewUser();
 	
-	public Project addProject(Project project);
+	public ProjectManagerRecord addProject(ProjectManagerRecord project);
 	
 	public Project updateProject(Project project);
 	
@@ -24,7 +27,7 @@ public interface ProjectManagerService {
 	
 	public List<Project> viewProject();
 
-	public Task addTask(Task task);
+	public ProjectManagerRecord addTask(ProjectManagerRecord task);
 	
 	public Task updateTask(Task task);
 	

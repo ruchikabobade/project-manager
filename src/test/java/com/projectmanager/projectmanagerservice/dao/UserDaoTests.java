@@ -26,8 +26,8 @@ public class UserDaoTests extends ProjectManagerTest {
 	@Test
 	public void test_addUser() {
 		User userResponse = getUserResponse();
-		Mockito.when(userRepository.save(userResponse)).thenReturn(userResponse);
-		User output = userDao.addUser(userResponse);
+		Mockito.when(userRepository.save(Mockito.any(User.class))).thenReturn(userResponse);
+		User output = userDao.addUser(getUserRecordResponse());
 		Assert.assertNotNull(output);
 		Assert.assertEquals(userResponse.getFirstName(), output.getFirstName());	
 	}
@@ -36,8 +36,8 @@ public class UserDaoTests extends ProjectManagerTest {
 	@Test
 	public void test_updateUser() {
 		User userResponse = getUserResponse();
-		Mockito.when(userRepository.save(userResponse)).thenReturn(userResponse);
-		User output = userDao.updateUser(userResponse);
+		Mockito.when(userRepository.save(Mockito.any(User.class))).thenReturn(userResponse);
+		User output = userDao.updateUser(getRecord_user());
 		Assert.assertNotNull(output);
 		Assert.assertEquals(userResponse.getFirstName(), output.getFirstName());	
 	}

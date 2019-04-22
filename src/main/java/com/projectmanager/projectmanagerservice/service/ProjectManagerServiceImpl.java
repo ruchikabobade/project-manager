@@ -8,9 +8,13 @@ import org.springframework.stereotype.Service;
 import com.projectmanager.projectmanagerservice.dao.ProjectDao;
 import com.projectmanager.projectmanagerservice.dao.TaskDao;
 import com.projectmanager.projectmanagerservice.dao.UserDao;
+import com.projectmanager.projectmanagerservice.entity.ParentTask;
 import com.projectmanager.projectmanagerservice.entity.Project;
 import com.projectmanager.projectmanagerservice.entity.Task;
 import com.projectmanager.projectmanagerservice.entity.User;
+import com.projectmanager.projectmanagerservice.model.ProjectRecord;
+import com.projectmanager.projectmanagerservice.model.ProjectManagerRecord;
+import com.projectmanager.projectmanagerservice.model.UserRecord;
 
 @Service
 public class ProjectManagerServiceImpl implements ProjectManagerService {
@@ -25,12 +29,12 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 	private TaskDao taskDao;
 	
 	@Override
-	public User addUser(User user) {
+	public User addUser(UserRecord user) {
 		return userDao.addUser(user);	
 	}
 
 	@Override
-	public User updateUser(User user) {
+	public User updateUser(ProjectManagerRecord user) {
 		return userDao.updateUser(user);
 	}
 
@@ -46,8 +50,11 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 	}
 
 	@Override
-	public Project addProject(Project project) {
-		return projectDao.addProject(project);
+	public ProjectManagerRecord addProject(ProjectManagerRecord projectManagerRecord) {
+		Project project = projectDao.addProject(projectManagerRecord.project);
+		projectManagerRecord.project.projectId = project.getProjectId();
+		userDao.updateUser(projectManagerRecord);
+		return projectManagerRecord;
 	}
 
 	@Override
@@ -66,8 +73,17 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 	}
 
 	@Override
-	public Task addTask(Task task) {
-        return taskDao.addTask(task);
+	public ProjectManagerRecord addTask(ProjectManagerRecord projectManagerRecord) {
+		if(projectManagerRecord.isParent) {
+			ParentTask parentTask = taskDao.addParentTask(projectManagerRecord);
+			projectManagerRecord.parentTask.parentId = parentTask.getParentId() ;
+		}
+		else {
+		Task task = taskDao.addTask(projectManagerRecord);
+		projectManagerRecord.taskId = task.getTaskId();
+		}
+		userDao.updateUser(projectManagerRecord);
+        return projectManagerRecord;
 	}
 
 	@Override

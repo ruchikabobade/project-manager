@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.projectmanager.projectmanagerservice.entity.User;
+import com.projectmanager.projectmanagerservice.model.ProjectManagerRecord;
+import com.projectmanager.projectmanagerservice.model.UserRecord;
 import com.projectmanager.projectmanagerservice.repository.UserRepository;
 
 @Component
@@ -15,11 +17,22 @@ public class UserDao {
 	@Autowired
 	private UserRepository userRepository;
 	
-	public User addUser(User user) {
+	public User addUser(UserRecord userRecord) {
+		User user = new User();
+		user.setFirstName(userRecord.firstName);
+		user.setLastName(userRecord.lastName);
+		user.setEmployeeId(userRecord.employeeId);
 		return userRepository.save(user);
 	}
 	
-	public User updateUser(User user) {
+	public User updateUser(ProjectManagerRecord projectManagerRecord) {
+		User user = new User();
+		user.setFirstName(projectManagerRecord.user.firstName);
+		user.setLastName(projectManagerRecord.user.lastName);
+		user.setEmployeeId(projectManagerRecord.user.employeeId);
+		user.setProjectId(projectManagerRecord.project.projectId);
+		user.setUserId(projectManagerRecord.user.userId);
+		user.setTaskId(projectManagerRecord.taskId);
 		return userRepository.save(user);
 	}
 	

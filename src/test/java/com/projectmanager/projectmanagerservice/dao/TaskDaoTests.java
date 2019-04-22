@@ -12,6 +12,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import com.projectmanager.projectmanagerservice.ProjectManagerTest;
 import com.projectmanager.projectmanagerservice.entity.Task;
+import com.projectmanager.projectmanagerservice.entity.User;
+import com.projectmanager.projectmanagerservice.model.ProjectManagerRecord;
 import com.projectmanager.projectmanagerservice.repository.TaskRepository;
 
 @RunWith(MockitoJUnitRunner.Silent.class)
@@ -26,8 +28,9 @@ public class TaskDaoTests extends ProjectManagerTest{
 	@Test
 	public void test_addTask() {
 		Task taskResponse = getTaskResponse();
-		Mockito.when(taskRepository.save(taskResponse)).thenReturn(taskResponse);
-		Task output = taskDao.addTask(taskResponse);
+		Mockito.when(taskRepository.save(Mockito.any(Task.class))).thenReturn(taskResponse);
+		ProjectManagerRecord input = getRecord_taskInput();
+		Task output = taskDao.addTask(input);
 		Assert.assertNotNull(output);
 		Assert.assertEquals(taskResponse.getTask(), output.getTask());	
 	}

@@ -14,6 +14,8 @@ import com.projectmanager.projectmanagerservice.ProjectManagerTest;
 import com.projectmanager.projectmanagerservice.entity.Project;
 import com.projectmanager.projectmanagerservice.entity.Task;
 import com.projectmanager.projectmanagerservice.entity.User;
+import com.projectmanager.projectmanagerservice.model.ProjectManagerRecord;
+import com.projectmanager.projectmanagerservice.model.UserRecord;
 import com.projectmanager.projectmanagerservice.service.ProjectManagerService;
 
 @RunWith(MockitoJUnitRunner.Silent.class)
@@ -27,21 +29,21 @@ public class ProjectManagerControllerTests extends ProjectManagerTest {
 
 	@Test
 	public void test_addUser() {
-		User userResponse = getUserResponse();
-		Mockito.when(service.addUser(userResponse)).thenReturn(userResponse);
+		UserRecord userResponse = getUserRecordResponse();
+		Mockito.when(service.addUser(userResponse)).thenReturn(getUserResponse());
 		User output = projectManagerController.addUser(userResponse);
 		Assert.assertNotNull(output);
-		Assert.assertEquals(userResponse.getFirstName(), output.getFirstName());	
+		Assert.assertEquals(userResponse.firstName , output.getFirstName());	
 	}
 	
 
 	@Test
 	public void test_updateUser() {
-		User userResponse = getUserResponse();
-		Mockito.when(service.updateUser(userResponse)).thenReturn(userResponse);
+		ProjectManagerRecord userResponse = getRecord_user();
+		Mockito.when(service.updateUser(userResponse)).thenReturn(getUserResponse());
 		User output = projectManagerController.updateUser(userResponse);
 		Assert.assertNotNull(output);
-		Assert.assertEquals(userResponse.getFirstName(), output.getFirstName());	
+		Assert.assertEquals(userResponse.user.firstName, output.getFirstName());	
 	}
 	
 
@@ -65,11 +67,11 @@ public class ProjectManagerControllerTests extends ProjectManagerTest {
 	
 	@Test
 	public void test_addProject() {
-		Project projectResponse = getProjectResponse();
-		Mockito.when(service.addProject(projectResponse)).thenReturn(projectResponse);
-		Project output = projectManagerController.addProject(projectResponse);
+		ProjectManagerRecord projectResponse = getRecord_projectInput();
+		Mockito.when(service.addProject(projectResponse)).thenReturn(getRecord_project());
+		ProjectManagerRecord output = projectManagerController.addProject(projectResponse);
 		Assert.assertNotNull(output);
-		Assert.assertEquals(projectResponse.getProject(), output.getProject());	
+		Assert.assertEquals(projectResponse.project.project, output.project.project);	
 	}
 	
 
@@ -103,11 +105,11 @@ public class ProjectManagerControllerTests extends ProjectManagerTest {
 	
 	@Test
 	public void test_addTask() {
-		Task taskResponse = getTaskResponse();
-		Mockito.when(service.addTask(taskResponse)).thenReturn(taskResponse);
-		Task output = projectManagerController.addTask(taskResponse);
+		ProjectManagerRecord taskResponse = getRecord_taskInput();
+		Mockito.when(service.addTask(taskResponse)).thenReturn(getRecord_task());
+		ProjectManagerRecord output = projectManagerController.addTask(taskResponse);
 		Assert.assertNotNull(output);
-		Assert.assertEquals(taskResponse.getTask(), output.getTask());	
+		Assert.assertEquals(taskResponse.task, output.task);	
 	}
 	
 

@@ -5,9 +5,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.projectmanager.projectmanagerservice.entity.ParentTask;
 import com.projectmanager.projectmanagerservice.entity.Project;
 import com.projectmanager.projectmanagerservice.entity.Task;
 import com.projectmanager.projectmanagerservice.entity.User;
+import com.projectmanager.projectmanagerservice.model.ParentTaskRecord;
+import com.projectmanager.projectmanagerservice.model.ProjectManagerRecord;
+import com.projectmanager.projectmanagerservice.model.ProjectRecord;
+import com.projectmanager.projectmanagerservice.model.UserRecord;
 
 public class ProjectManagerTest {
 
@@ -16,9 +21,52 @@ public class ProjectManagerTest {
 	public Long taskId = 1L;
 	public String successMsg = "Success";
 	
-	public User getUserResponse() {
-		User user = new User("xyz","pqr","123",1L,1L);	
+	public UserRecord getUserRecordResponse() {
+		UserRecord user = new UserRecord(null, "XYZ", "POLO", "12345");	
 		return user;
+	}
+	
+	public User getUserResponse() {
+		User user = new User("XYZ","pqr","123",1L,1L);	
+		return user;
+	}
+	
+	public ProjectManagerRecord getRecord_user() {
+		
+		ProjectRecord project = new ProjectRecord(1L, "XYZ", false, null, null, 0);
+		UserRecord user = new UserRecord(0L, "XYZ", "POLO", "12345");	
+		ProjectManagerRecord record = new ProjectManagerRecord(0L, "", null, null, 0, "", false, null, user, project);	
+		return record;
+	}
+	
+	public ProjectManagerRecord getRecord_projectInput() {
+		ProjectRecord project = new ProjectRecord(0L, "XYZ", false, null, null, 0);
+		UserRecord user = new UserRecord(1L, "XYZ", "POLO", "12345");	
+		ProjectManagerRecord record = new ProjectManagerRecord(0L, "", null, null, 0, "", false, null, user, project);	
+		return record;	
+	}
+	
+	public ProjectManagerRecord getRecord_project() {
+		ProjectRecord project = new ProjectRecord(1L, "XYZ", false, null, null, 10);
+		UserRecord user = new UserRecord(0L, "XYZ", "POLO", "12345");	
+		ProjectManagerRecord record = new ProjectManagerRecord(0L, "", null, null, 0, "", false, null, user, project);	
+		return record;
+	}
+	
+	public ProjectManagerRecord getRecord_taskInput() {
+		ProjectRecord project = new ProjectRecord(1L, "XYZ", false, null, null, 0);
+		UserRecord user = new UserRecord(1L, "XYZ", "POLO", "12345");	
+		ParentTaskRecord parent = new ParentTaskRecord(1L,"polo");
+		ProjectManagerRecord record = new ProjectManagerRecord(0L, "xyz", new Date(), new Date(), 10, "completed", false, parent, user, project);	
+		return record;
+	}
+	
+	public ProjectManagerRecord getRecord_task() {
+		ProjectRecord project = new ProjectRecord(1L, "XYZ", false, null, null, 0);
+		UserRecord user = new UserRecord(0L, "XYZ", "POLO", "12345");	
+		ParentTaskRecord parent = new ParentTaskRecord(0L,"polo");
+		ProjectManagerRecord record = new ProjectManagerRecord(1L, "xyz", new Date(), new Date(), 10, "completed", false, parent, user, project);	
+		return record;
 	}
 	
 	public List<User> getListOfUsers(){

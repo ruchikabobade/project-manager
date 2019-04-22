@@ -5,7 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.projectmanager.projectmanagerservice.entity.ParentTask;
 import com.projectmanager.projectmanagerservice.entity.Task;
+import com.projectmanager.projectmanagerservice.model.ProjectManagerRecord;
+import com.projectmanager.projectmanagerservice.repository.ParentTaskRepository;
 import com.projectmanager.projectmanagerservice.repository.TaskRepository;
 
 @Component
@@ -14,8 +17,27 @@ public class TaskDao {
 	@Autowired
 	private TaskRepository taskRepository;
 	
-	public Task addTask(Task task) {
+	@Autowired
+	private ParentTaskRepository parentTaskRepository;
+	
+	public Task addTask(ProjectManagerRecord projectManagerRecord) {
+		Task task = new Task();
+		task.setTask(projectManagerRecord.task);
+		task.setParentId(projectManagerRecord.parentTask.parentId);
+		task.setEndDate(projectManagerRecord.endDate);
+		task.setStartDate(projectManagerRecord.startDate);
+		task.setProjectId(projectManagerRecord.project.projectId);
+		task.setPriority(projectManagerRecord.priority);
+		task.setStatus(projectManagerRecord.status);
 		return taskRepository.save(task);
+		
+	}
+	
+	public ParentTask addParentTask(ProjectManagerRecord projectManagerRecord) {
+
+			ParentTask parentTask = new ParentTask();
+			parentTask.setParentTask(projectManagerRecord.task);
+		return  parentTaskRepository.save(parentTask);
 	}
 	
 	public Task updateTask(Task task) {

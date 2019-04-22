@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.projectmanager.projectmanagerservice.entity.Project;
 import com.projectmanager.projectmanagerservice.entity.Task;
 import com.projectmanager.projectmanagerservice.entity.User;
+import com.projectmanager.projectmanagerservice.model.ProjectRecord;
+import com.projectmanager.projectmanagerservice.model.ProjectManagerRecord;
+import com.projectmanager.projectmanagerservice.model.UserRecord;
 import com.projectmanager.projectmanagerservice.service.ProjectManagerService;
 
 @RestController
@@ -29,13 +32,13 @@ public class ProjectManagerController {
 	private ProjectManagerService service;
 	
 	@PostMapping(path="/projectmanager/service/user/addUser")
-	public User addUser(@RequestBody User user ) {
+	public User addUser(@RequestBody UserRecord user ) {
 		logger.info("add user");
 		return service.addUser(user);
 	}
 	
 	@PutMapping(path="/projectmanager/service/user/updateUser")
-	public User updateUser(@RequestBody User user) {
+	public User updateUser(@RequestBody ProjectManagerRecord user) {
 		return service.updateUser(user);
 	}
 	
@@ -50,7 +53,7 @@ public class ProjectManagerController {
 	}
 	
 	@PostMapping(path="/projectmanager/service/project/addProject")
-	public Project addProject(@RequestBody Project project ) {
+	public ProjectManagerRecord addProject(@RequestBody ProjectManagerRecord project ) {
 		logger.info("add user");
 		return service.addProject(project);
 	}
@@ -71,7 +74,7 @@ public class ProjectManagerController {
 	}
 	
 	@PostMapping(path="/projectmanager/service/task/addtask")
-	public Task addTask(@RequestBody Task task ) {
+	public ProjectManagerRecord addTask(@RequestBody ProjectManagerRecord task ) {
 		logger.info("add user");
 		return service.addTask(task);
 	}

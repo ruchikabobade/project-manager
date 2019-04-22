@@ -12,6 +12,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import com.projectmanager.projectmanagerservice.ProjectManagerTest;
 import com.projectmanager.projectmanagerservice.entity.Project;
+import com.projectmanager.projectmanagerservice.entity.User;
 import com.projectmanager.projectmanagerservice.repository.ProjectRepository;
 import com.projectmanager.projectmanagerservice.repository.UserRepository;
 
@@ -27,8 +28,8 @@ public class ProjectDaoTests extends ProjectManagerTest{
 	@Test
 	public void test_addProject() {
 		Project projectResponse = getProjectResponse();
-		Mockito.when(projectRepository.save(projectResponse)).thenReturn(projectResponse);
-		Project output = projectDao.addProject(projectResponse);
+		Mockito.when(projectRepository.save(Mockito.any(Project.class))).thenReturn(projectResponse);
+		Project output = projectDao.addProject(getRecord_projectInput().project);
 		Assert.assertNotNull(output);
 		Assert.assertEquals(projectResponse.getProject(), output.getProject());	
 	}

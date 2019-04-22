@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.projectmanager.projectmanagerservice.entity.Project;
+import com.projectmanager.projectmanagerservice.model.ProjectRecord;
+import com.projectmanager.projectmanagerservice.model.ProjectManagerRecord;
 import com.projectmanager.projectmanagerservice.repository.ProjectRepository;
 
 @Component
@@ -14,7 +16,14 @@ public class ProjectDao {
 	@Autowired
 	private ProjectRepository projectRepository;
 	
-	public Project addProject(Project project) {
+	public Project addProject(ProjectRecord projectRecord) {
+		Project project = new Project();
+		project.setProject(projectRecord.project);
+		if(projectRecord.setDate) {
+		project.setStartDate(projectRecord.startDate);
+		project.setEndDate(projectRecord.endDate);
+		}
+		project.setPriority(projectRecord.priority);
 		return projectRepository.save(project);
 	}
 	
