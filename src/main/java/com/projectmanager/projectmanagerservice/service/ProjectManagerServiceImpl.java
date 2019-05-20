@@ -13,6 +13,7 @@ import com.projectmanager.projectmanagerservice.entity.Project;
 import com.projectmanager.projectmanagerservice.entity.Task;
 import com.projectmanager.projectmanagerservice.entity.User;
 import com.projectmanager.projectmanagerservice.model.ProjectRecord;
+import com.projectmanager.projectmanagerservice.model.ParentTaskRecord;
 import com.projectmanager.projectmanagerservice.model.ProjectManagerRecord;
 import com.projectmanager.projectmanagerservice.model.UserRecord;
 
@@ -48,6 +49,13 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 	public List<User> viewUser() {
 		return userDao.viewUser();
 	}
+	
+	@Override
+	public List<User> viewUserByFirstName(String firstName) {
+		// TODO Auto-generated method stub
+		 	return userDao.viewUserByFirstName(firstName);
+	}
+
 
 	@Override
 	public ProjectManagerRecord addProject(ProjectManagerRecord projectManagerRecord) {
@@ -63,7 +71,7 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 	}
 
 	@Override
-	public String suspendProject(Long projectId) {
+	public Project suspendProject(Long projectId) {
 		return projectDao.suspendProject(projectId);
 	}
 
@@ -71,12 +79,20 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 	public List<Project> viewProject() {
 		return projectDao.viewProject();
 	}
+	
+	@Override
+	public List<Project> viewProjectByProject(String project) {
+		 	return projectDao.viewProjectByProject(project);
+	}
 
 	@Override
 	public ProjectManagerRecord addTask(ProjectManagerRecord projectManagerRecord) {
 		if(projectManagerRecord.isParent) {
 			ParentTask parentTask = taskDao.addParentTask(projectManagerRecord);
-			projectManagerRecord.parentTask.parentId = parentTask.getParentId() ;
+			System.out.println(parentTask.toString());
+			System.out.println(parentTask.parentId);
+			ParentTaskRecord r = new ParentTaskRecord(parentTask.parentId, parentTask.parentTask);
+			projectManagerRecord.parentTask = r ;
 		}
 		else {
 		Task task = taskDao.addTask(projectManagerRecord);
@@ -100,5 +116,10 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 	public List<Task> viewTask() {
 		return taskDao.viewTask();
 	}
-
+	
+	@Override
+	public List<ParentTask> viewTaskByParent(String parentTask) {
+		return taskDao.viewTaskByParent(parentTask);
+	}
+	
 }

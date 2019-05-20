@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.projectmanager.projectmanagerservice.entity.ParentTask;
 import com.projectmanager.projectmanagerservice.entity.Project;
 import com.projectmanager.projectmanagerservice.entity.Task;
 import com.projectmanager.projectmanagerservice.entity.User;
@@ -49,7 +50,15 @@ public class ProjectManagerController {
 	
 	@GetMapping(path="/projectmanager/service/user/viewUser")
 	public List<User> viewUser(){
+		logger.info("view");
 		return service.viewUser();
+	}
+	
+
+	@GetMapping(path="/projectmanager/service/user/viewUserByFirstName/{firstName}")
+	public List<User> viewUserByFirstName(@PathVariable String firstName){
+		logger.info("view");
+		return service.viewUserByFirstName(firstName);
 	}
 	
 	@PostMapping(path="/projectmanager/service/project/addProject")
@@ -64,13 +73,19 @@ public class ProjectManagerController {
 	}
 	
 	@DeleteMapping(path="/projectmanager/service/project/suspendProject/{projectId}")
-	public String suspendProject(@PathVariable Long projectId) {
+	public Project suspendProject(@PathVariable Long projectId) {
 		return service.suspendProject(projectId);
 	}
 	
 	@GetMapping(path="/projectmanager/service/project/viewProject")
 	public List<Project> viewProject(){
 		return service.viewProject();
+	}
+	
+	@GetMapping(path="/projectmanager/service/project/viewProjectByProject/{project}")
+	public List<Project> viewProjectByFirstName(@PathVariable String project){
+		logger.info("view");
+		return service.viewProjectByProject(project);
 	}
 	
 	@PostMapping(path="/projectmanager/service/task/addtask")
@@ -92,6 +107,11 @@ public class ProjectManagerController {
 	@GetMapping(path="/projectmanager/service/task/viewTask")
 	public List<Task> viewTask(){
 		return service.viewTask();
+	}
+	@GetMapping(path="/projectmanager/service/task/viewTaskByParent/{parentTask}")
+	public List<ParentTask> viewTaskByParent(@PathVariable String parentTask){
+		logger.info("view");
+		return service.viewTaskByParent(parentTask);
 	}
 	
 }

@@ -2,6 +2,7 @@ package com.projectmanager.projectmanagerservice.service;
 
 import java.util.List;
 
+import com.projectmanager.projectmanagerservice.entity.ParentTask;
 import com.projectmanager.projectmanagerservice.entity.Project;
 import com.projectmanager.projectmanagerservice.entity.Task;
 import com.projectmanager.projectmanagerservice.entity.User;
@@ -19,13 +20,17 @@ public interface ProjectManagerService {
 	
 	public List<User> viewUser();
 	
+	public List<User> viewUserByFirstName(String firstName);
+	
 	public ProjectManagerRecord addProject(ProjectManagerRecord project);
 	
 	public Project updateProject(Project project);
 	
-	public String suspendProject(Long projectId);
+	public Project suspendProject(Long projectId);
 	
 	public List<Project> viewProject();
+	
+	public List<Project> viewProjectByProject(String project);
 
 	public ProjectManagerRecord addTask(ProjectManagerRecord task);
 	
@@ -34,4 +39,6 @@ public interface ProjectManagerService {
 	public String endTask(Long taskId);
 	
 	public List<Task> viewTask();
+	
+	public List<ParentTask> viewTaskByParent(String parentTask);
 }

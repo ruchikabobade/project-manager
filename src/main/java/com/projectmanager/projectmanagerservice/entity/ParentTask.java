@@ -14,10 +14,10 @@ public class ParentTask {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="parent_id")
-	Long parentId;
+	public Long parentId;
 	
 	@Column(name="parent_task")
-	String parentTask;
+	public String parentTask;
 	
 	public ParentTask() {}
 	
@@ -39,5 +39,10 @@ public class ParentTask {
 
 	public void setParentTask(String parentTask) {
 		this.parentTask = parentTask;
+	}
+
+	@Override
+	public String toString() {
+		return "ParentTask [parentId=" + parentId + ", parentTask=" + parentTask + "]";
 	}
 }

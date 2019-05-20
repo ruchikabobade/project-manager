@@ -34,10 +34,9 @@ public class TaskDao {
 	}
 	
 	public ParentTask addParentTask(ProjectManagerRecord projectManagerRecord) {
-
 			ParentTask parentTask = new ParentTask();
 			parentTask.setParentTask(projectManagerRecord.task);
-		return  parentTaskRepository.save(parentTask);
+		return parentTaskRepository.save(parentTask);
 	}
 	
 	public Task updateTask(Task task) {
@@ -51,6 +50,10 @@ public class TaskDao {
 	
 	public List<Task> viewTask(){
 		return taskRepository.findAll();
+	}
+
+	public List<ParentTask> viewTaskByParent(String parentTask){
+		return parentTaskRepository.findAllByParentTask(parentTask);
 	}
 
 

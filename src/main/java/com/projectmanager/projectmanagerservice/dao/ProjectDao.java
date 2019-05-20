@@ -1,11 +1,16 @@
 package com.projectmanager.projectmanagerservice.dao;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.projectmanager.projectmanagerservice.entity.Project;
+import com.projectmanager.projectmanagerservice.entity.User;
 import com.projectmanager.projectmanagerservice.model.ProjectRecord;
 import com.projectmanager.projectmanagerservice.model.ProjectManagerRecord;
 import com.projectmanager.projectmanagerservice.repository.ProjectRepository;
@@ -31,13 +36,18 @@ public class ProjectDao {
 		return projectRepository.save(project);
 	}
 	
-	public String suspendProject(Long projectId) {
-		projectRepository.deleteById(projectId);
-		return "Success";
+	public Project suspendProject(Long projectId) {
+		Project project = projectRepository.findByProjectId(projectId);
+		project.setStatus(true);
+		projectRepository.save(project);
+		return projectRepository.save(project);
 	}
 	
 	public List<Project> viewProject(){
 		return projectRepository.findAll();
+	}
+	public List<Project> viewProjectByProject(String project){
+		return projectRepository.findAllByProject(project);
 	}
 
 }

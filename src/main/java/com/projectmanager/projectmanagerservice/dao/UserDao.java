@@ -32,6 +32,10 @@ public class UserDao {
 		user.setEmployeeId(projectManagerRecord.user.employeeId);
 		user.setProjectId(projectManagerRecord.project.projectId);
 		user.setUserId(projectManagerRecord.user.userId);
+		if(projectManagerRecord.taskId== null) {
+			user.setTaskId(projectManagerRecord.parentTask.parentId);
+		}
+		else
 		user.setTaskId(projectManagerRecord.taskId);
 		return userRepository.save(user);
 	}
@@ -43,5 +47,8 @@ public class UserDao {
 	
 	public List<User> viewUser(){
 		return userRepository.findAll();
+	}
+	public List<User> viewUserByFirstName(String firstName){
+		return userRepository.findAllByFirstName(firstName);
 	}
 }

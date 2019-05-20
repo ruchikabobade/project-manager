@@ -7,10 +7,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "project")
+@NamedQuery(name = "Project.suspendProject",
+query = "UPDATE Project p " + 
+		"SET p.status =:status "+ 
+		"WHERE p.projectId =:projectId")
 public class Project {
 
 	@Id
@@ -30,13 +35,17 @@ public class Project {
 	@Column(name="priority")
 	int priority;	
 	
+	@Column(name="status")
+	boolean status = false;
+	
 	public Project() {}
 	
-	public Project(String project, Date startDate, Date endDate, int priority) {
+	public Project(String project, Date startDate, Date endDate, int priority, boolean status) {
 		this.project = project;
 		this.endDate = endDate;
 		this.startDate = startDate;
 		this.priority = priority;
+		this.status = status;
 	}
 
 	public Long getProjectId() {
@@ -78,4 +87,13 @@ public class Project {
 	public void setPriority(int priority) {
 		this.priority = priority;
 	}
+	
+	public boolean getStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+	
 }
