@@ -39,7 +39,6 @@ public class ProjectDao {
 	public Project suspendProject(Long projectId) {
 		Project project = projectRepository.findByProjectId(projectId);
 		project.setStatus(true);
-		projectRepository.save(project);
 		return projectRepository.save(project);
 	}
 	

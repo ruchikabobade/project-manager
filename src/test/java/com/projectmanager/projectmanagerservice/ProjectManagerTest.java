@@ -79,14 +79,14 @@ public class ProjectManagerTest {
 	}
 	
 	public Project getProjectResponse() {
-		Project project = new Project("xyz",new Date(),new Date(),10);	
+		Project project = new Project("xyz",new Date(),new Date(),10, false);	
 		return project;
 	}
 	
 	public List<Project> getListOfProjects(){
 		List<Project> projects = new ArrayList();
-		Project project1 = new Project("xyz",new Date(),new Date(),10);
-		Project project2 = new Project("pqre",new Date(),new Date(),10);
+		Project project1 = new Project("xyz",new Date(),new Date(),10, false);
+		Project project2 = new Project("pqre",new Date(),new Date(),10, false);
 		projects.add(project1);
 		projects.add(project2);
 		return projects;

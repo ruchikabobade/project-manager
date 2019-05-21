@@ -87,10 +87,12 @@ public class ProjectManagerControllerTests extends ProjectManagerTest {
 
 	@Test
 	public void test_suspendProject() {
-		Mockito.when(service.suspendProject(projectId)).thenReturn(successMsg);
-		String output = projectManagerController.suspendProject(projectId);
+		Project project = getProjectResponse();
+		project.setStatus(true);
+		Mockito.when(service.suspendProject(projectId)).thenReturn(project);
+		Project output = projectManagerController.suspendProject(projectId);
 		Assert.assertNotNull(output);
-		Assert.assertEquals(successMsg, output);	
+		Assert.assertEquals(true, output.getStatus());	
 	}
 	
 

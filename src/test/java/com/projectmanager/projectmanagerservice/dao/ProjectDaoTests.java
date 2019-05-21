@@ -47,10 +47,13 @@ public class ProjectDaoTests extends ProjectManagerTest{
 
 	@Test
 	public void test_suspendProject() {
+		Project projectResponse = getProjectResponse();
+		Mockito.when(projectRepository.findByProjectId(Mockito.any())).thenReturn(projectResponse);
+		Mockito.when(projectRepository.save(Mockito.any(Project.class))).thenReturn(projectResponse);
 		Mockito.doNothing().when(projectRepository).deleteById(projectId);
-		String output = projectDao.suspendProject(projectId);
+		Project output = projectDao.suspendProject(projectId);
 		Assert.assertNotNull(output);
-		Assert.assertEquals(successMsg, output);	
+		Assert.assertEquals(true, output.getStatus());	
 	}
 	
 

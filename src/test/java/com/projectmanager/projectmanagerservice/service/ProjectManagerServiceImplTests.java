@@ -96,10 +96,12 @@ public class ProjectManagerServiceImplTests extends ProjectManagerTest {
 
 	@Test
 	public void test_suspendProject() {
-		Mockito.when(projectDao.suspendProject(projectId)).thenReturn(successMsg);
-		String output = service.suspendProject(projectId);
+		Project project = getProjectResponse();
+		project.setStatus(true);
+		Mockito.when(projectDao.suspendProject(projectId)).thenReturn(project);
+		Project output = service.suspendProject(projectId);
 		Assert.assertNotNull(output);
-		Assert.assertEquals(successMsg, output);	
+		Assert.assertEquals(true, output.getStatus());	
 	}
 	
 
