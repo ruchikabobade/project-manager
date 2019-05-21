@@ -14,4 +14,9 @@ public class ParentTaskRecord {
 	}
 	public Long parentId = null;
 	public String parentTask = "";
+	
+	@Override
+	public String toString() {
+		return "ParentTaskRecord [parentId=" + parentId + ", parentTask=" + parentTask + "]";
+	}
 }

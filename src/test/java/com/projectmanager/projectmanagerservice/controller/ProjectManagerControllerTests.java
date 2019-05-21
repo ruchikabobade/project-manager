@@ -11,6 +11,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import com.projectmanager.projectmanagerservice.ProjectManagerTest;
+import com.projectmanager.projectmanagerservice.entity.ParentTask;
 import com.projectmanager.projectmanagerservice.entity.Project;
 import com.projectmanager.projectmanagerservice.entity.Task;
 import com.projectmanager.projectmanagerservice.entity.User;
@@ -120,6 +121,15 @@ public class ProjectManagerControllerTests extends ProjectManagerTest {
 	}
 	
 	@Test
+	public void test_viewProjectByProjectName() throws ProjectManagerProjectException, ProjectManagerTaskException {
+		List<Project> projects = getListOfProjects();
+		Mockito.when(service.viewProjectByProjectName("PQR")).thenReturn(projects);
+		List<Project> output = projectManagerController.viewProjectByProjectName("PQR");
+		Assert.assertNotNull(output);
+		Assert.assertEquals(projects.size(), output.size());	
+	}
+	
+	@Test
 	public void test_addTask() throws ProjectManagerUserException, ProjectManagerTaskException {
 		ProjectManagerRecord taskResponse = getRecord_taskInput();
 		Mockito.when(service.addTask(taskResponse)).thenReturn(getRecord_task());
@@ -153,6 +163,15 @@ public class ProjectManagerControllerTests extends ProjectManagerTest {
 		List<ProjectManagerRecord> tasks =  getRecords_task();
 		Mockito.when(service.viewTask()).thenReturn(tasks);
 		List<ProjectManagerRecord> output = projectManagerController.viewTask();
+		Assert.assertNotNull(output);
+		Assert.assertEquals(tasks.size(), output.size());	
+	}
+	
+	@Test
+	public void test_viewTaskByParent() throws ProjectManagerTaskException {
+		List<ParentTask> tasks =  getListOfParentTasks();
+		Mockito.when(service.viewTaskByParent("pqr")).thenReturn(tasks);
+		List<ParentTask> output = projectManagerController.viewTaskByParent("pqr");
 		Assert.assertNotNull(output);
 		Assert.assertEquals(tasks.size(), output.size());	
 	}

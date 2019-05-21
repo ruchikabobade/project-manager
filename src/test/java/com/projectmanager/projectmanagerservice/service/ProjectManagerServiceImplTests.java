@@ -108,7 +108,7 @@ public class ProjectManagerServiceImplTests extends ProjectManagerTest {
 	
 
 	@Test
-	public void test_suspendProject() throws ProjectManagerProjectException, ProjectManagerTaskException {
+	public void test_suspendProject() throws ProjectManagerProjectException, ProjectManagerTaskException, ProjectManagerUserException {
 		Project project = getProjectResponse();
 		project.setStatus(true);
 		Mockito.when(projectDao.suspendProject(projectId)).thenReturn(project);

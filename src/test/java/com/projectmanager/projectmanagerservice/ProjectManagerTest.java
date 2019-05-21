@@ -124,6 +124,13 @@ public class ProjectManagerTest {
 		tasks.add(task2);
 		return tasks;
 	}
-	
+	 public List<ParentTask> getListOfParentTasks(){
+		 List<ParentTask> tasks = new ArrayList();
+		 ParentTask task1 = new ParentTask( "xyz");	
+		 ParentTask task2 = new ParentTask( "pqr");	
+			tasks.add(task1);
+			tasks.add(task2);
+			return tasks;
+	 }
 
 }

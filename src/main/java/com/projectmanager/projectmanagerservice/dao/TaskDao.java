@@ -1,6 +1,5 @@
 package com.projectmanager.projectmanagerservice.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -26,7 +25,7 @@ public class TaskDao {
 	
 	public Task addTask(ProjectManagerRecord projectManagerRecord) throws ProjectManagerTaskException {
 		try {
-		logger.info("Adding task ----------" + projectManagerRecord.toString());
+		logger.info("In TaskDao, Adding task ----------" + projectManagerRecord.toString());
 		Task task = new Task();
 		task.setTask(projectManagerRecord.task);
 		task.setParentId(projectManagerRecord.parentTask.parentId);
@@ -45,7 +44,7 @@ public class TaskDao {
 	
 	public ParentTask addParentTask(ProjectManagerRecord projectManagerRecord) throws ProjectManagerTaskException {
 		try {
-			logger.info("Adding Parent task ----------" + projectManagerRecord.toString());
+			logger.info("In TaskDao, Adding Parent task ----------" + projectManagerRecord.toString());
 			ParentTask parentTask = new ParentTask();
 			parentTask.setParentTask(projectManagerRecord.task);
 		return parentTaskRepository.save(parentTask);
@@ -58,7 +57,7 @@ public class TaskDao {
 	
 	public Task updateTask(Task task) throws ProjectManagerTaskException {
 		try {
-			logger.info("Updating task ----------" + task.toString());
+			logger.info("In TaskDao, Updating task ----------" + task.toString());
 		return taskRepository.save(task);
 		} catch(Exception ex){
 			logger.info("Exception occured while updating task -- " + ex.getMessage());
@@ -68,20 +67,20 @@ public class TaskDao {
 	
 	public Task endTask(Long taskId) throws ProjectManagerTaskException {
 		try {
-			logger.info("Updating task status for taskId --------" + taskId);
+			logger.info("In TaskDao, Updating task status for taskId --------" + taskId);
 			Task task = taskRepository.findByTaskId(taskId);
 			task.setStatus("completed");	
 		return taskRepository.save(task);
 		}
 		catch(Exception ex){
-			logger.info("Exception occured while updating task status for taskId -- " +taskId +" , error---" + ex.getMessage());
+			logger.info("In TaskDao, Exception occured while updating task status for taskId -- " +taskId +" , error---" + ex.getMessage());
 			throw new ProjectManagerTaskException(500, "Error in adding updating task status");
 		}
 	}
 	
 	public List<Task> viewTask() throws ProjectManagerTaskException{
 		try {
-			logger.info("Fetching list of tasks");
+			logger.info("In TaskDao, Fetching list of tasks");
 		return taskRepository.findAll();
 		}
 		catch(Exception ex){
@@ -92,7 +91,7 @@ public class TaskDao {
 
 	public List<ParentTask> viewParentTask() throws ProjectManagerTaskException{
 		try {
-			logger.info("Fetching list of parent tasks");
+			logger.info("In TaskDao, Fetching list of parent tasks");
 		return parentTaskRepository.findAll();
 		}
 		catch(Exception ex){
@@ -102,7 +101,7 @@ public class TaskDao {
 	}
 	public List<ParentTask> viewTaskByParent(String parentTask) throws ProjectManagerTaskException{
 		try {
-			logger.info("Fetching list of parent tasks for task name ---" + parentTask);
+			logger.info("In TaskDao, Fetching list of parent tasks for task name ---" + parentTask);
 		return parentTaskRepository.findAllByParentTask(parentTask);
 		}
 		catch(Exception ex){
@@ -113,7 +112,7 @@ public class TaskDao {
 	
 	public List<Task> viewTaskByProject(Long projectId) throws ProjectManagerTaskException{
 		try {
-			logger.info("Fetching list of tasks for projectId ---" + projectId);
+			logger.info("In TaskDao, Fetching list of tasks for projectId ---" + projectId);
 		return taskRepository.findAllByProjectId(projectId);
 		}
 		catch(Exception ex){
@@ -124,7 +123,7 @@ public class TaskDao {
 	
 	public List<Task> getCompletedTasks(Long projectId) throws ProjectManagerTaskException{
 		try {
-			logger.info("Fetching list of completed tasks for projectId ---" + projectId);
+			logger.info("In TaskDao, Fetching list of completed tasks for projectId ---" + projectId);
 			String status = "completed";
 		return taskRepository.findAllByProjectIdAndStatus(projectId, status);
 		}
@@ -135,6 +134,7 @@ public class TaskDao {
 	}
 	
 	public ParentTask getParentTaskById(Long id) {
+		logger.info("In TaskDao, getting parent task by id -- " +id);
 		return parentTaskRepository.getOne(id);
 	}
 	

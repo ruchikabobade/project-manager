@@ -25,4 +25,12 @@ public class ProjectRecord {
 	public int tasks = 0;
 	public int completedTasks = 0;
 	public boolean status = false;
+	public String manager = "";
+	
+	@Override
+	public String toString() {
+		return "ProjectRecord [projectId=" + projectId + ", project=" + project + ", setDate=" + setDate
+				+ ", startDate=" + startDate + ", endDate=" + endDate + ", priority=" + priority + ", tasks=" + tasks
+				+ ", completedTasks=" + completedTasks + ", status=" + status + ", manager=" + manager + "]";
+	}
 }

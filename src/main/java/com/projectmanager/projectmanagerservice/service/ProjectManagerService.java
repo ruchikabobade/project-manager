@@ -33,7 +33,7 @@ public interface ProjectManagerService {
 	
 	public List<ProjectRecord> viewProject() throws ProjectManagerProjectException,  ProjectManagerTaskException;
 	
-	public List<Project> viewProjectByProject(String project);
+	public List<Project> viewProjectByProjectName(String project);
 
 	public ProjectManagerRecord addTask(ProjectManagerRecord task) throws ProjectManagerUserException, ProjectManagerTaskException ;
 	

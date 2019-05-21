@@ -10,4 +10,5 @@ import com.projectmanager.projectmanagerservice.entity.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
  public List<User> findAllByFirstName(@Param(value = "firstName") String firstName);
+ public User findByProjectId(@Param(value = "projectId") Long projectId);
 }

@@ -13,4 +13,10 @@ public class UserRecord {
 	public String firstName = "";
 	public String lastName = "";
 	public String employeeId = "";
+	
+	@Override
+	public String toString() {
+		return "UserRecord [userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName + ", employeeId="
+				+ employeeId + "]";
+	}
 }

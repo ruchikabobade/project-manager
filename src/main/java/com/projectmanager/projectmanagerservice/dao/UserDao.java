@@ -20,7 +20,7 @@ public class UserDao {
 	
 	public User addUser(UserRecord userRecord) throws ProjectManagerUserException {
 		try {
-			logger.info("Adding user ------" + userRecord.toString());
+			logger.info("In UserDao, Adding user ------" + userRecord.toString());
 		User user = new User();
 		user.setFirstName(userRecord.firstName);
 		user.setLastName(userRecord.lastName);
@@ -34,6 +34,7 @@ public class UserDao {
 	
 	public User updateUser(ProjectManagerRecord projectManagerRecord) throws ProjectManagerUserException {
 		try {
+			logger.info("In UserDao, updating user ------" + projectManagerRecord.toString());
 		User user = new User();
 		user.setFirstName(projectManagerRecord.user.firstName);
 		user.setLastName(projectManagerRecord.user.lastName);
@@ -54,6 +55,7 @@ public class UserDao {
 	
 	public String deleteUser(Long userId) throws ProjectManagerUserException {
 		try {
+			logger.info("In UserDao, deleting user with userId ------" + userId);
 		userRepository.deleteById(userId);
 		return "Success";
 		}catch(Exception e) {
@@ -64,6 +66,7 @@ public class UserDao {
 	
 	public List<User> viewUser() throws ProjectManagerUserException{
 		try {
+			logger.info("In UserDao, fetching all users");
 		return userRepository.findAll();
 		}
 		catch(Exception e) {
@@ -74,10 +77,22 @@ public class UserDao {
 	
 	public List<User> viewUserByFirstName(String firstName) throws ProjectManagerUserException{
 		try {
+			logger.info("In UserDao, fetching all users with firstName --" + firstName);
 		return userRepository.findAllByFirstName(firstName);
 		}
 		catch(Exception e) {
 			logger.info("Exception occured while fetching user list with first name -- " +firstName +" , error ----" + e.getMessage());
+			throw new ProjectManagerUserException(500, e.getMessage());
+		}
+	}
+	
+	public User getUserByProjectId(Long projectId) throws ProjectManagerUserException{
+		try {
+			logger.info("In UserDao, fetching user with projectId --- " + projectId);
+		return userRepository.findByProjectId(projectId);
+		}
+		catch(Exception e) {
+			logger.info("Exception occured while fetching user with project id -- " +projectId +" , error ----" + e.getMessage());
 			throw new ProjectManagerUserException(500, e.getMessage());
 		}
 	}
