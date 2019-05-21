@@ -17,7 +17,11 @@ import com.projectmanager.projectmanagerservice.dao.UserDao;
 import com.projectmanager.projectmanagerservice.entity.Project;
 import com.projectmanager.projectmanagerservice.entity.Task;
 import com.projectmanager.projectmanagerservice.entity.User;
+import com.projectmanager.projectmanagerservice.exception.ProjectManagerProjectException;
+import com.projectmanager.projectmanagerservice.exception.ProjectManagerTaskException;
+import com.projectmanager.projectmanagerservice.exception.ProjectManagerUserException;
 import com.projectmanager.projectmanagerservice.model.ProjectManagerRecord;
+import com.projectmanager.projectmanagerservice.model.ProjectRecord;
 import com.projectmanager.projectmanagerservice.model.UserRecord;
 
 @RunWith(MockitoJUnitRunner.Silent.class)
@@ -36,7 +40,7 @@ public class ProjectManagerServiceImplTests extends ProjectManagerTest {
 	private TaskDao taskDao;
 
 	@Test
-	public void test_addUser() {
+	public void test_addUser() throws ProjectManagerUserException {
 		UserRecord userResponse = getUserRecordResponse();
 		Mockito.when(userDao.addUser(userResponse)).thenReturn(getUserResponse());
 		User output = service.addUser(userResponse);
@@ -46,7 +50,7 @@ public class ProjectManagerServiceImplTests extends ProjectManagerTest {
 	
 
 	@Test
-	public void test_updateUser() {
+	public void test_updateUser() throws ProjectManagerUserException {
 		ProjectManagerRecord userResponse = getRecord_user();
 		Mockito.when(userDao.updateUser(userResponse)).thenReturn(getUserResponse());
 		User output = service.updateUser(userResponse);
@@ -56,7 +60,7 @@ public class ProjectManagerServiceImplTests extends ProjectManagerTest {
 	
 
 	@Test
-	public void test_deleteUser() {
+	public void test_deleteUser() throws ProjectManagerUserException {
 		Mockito.when(userDao.deleteUser(userId)).thenReturn(successMsg);
 		String output = service.deleteUser(userId);
 		Assert.assertNotNull(output);
@@ -65,7 +69,7 @@ public class ProjectManagerServiceImplTests extends ProjectManagerTest {
 	
 
 	@Test
-	public void test_viewUser() {
+	public void test_viewUser() throws ProjectManagerUserException {
 		List<User> users = getListOfUsers();
 		Mockito.when(userDao.viewUser()).thenReturn(users);
 		List<User> output = service.viewUser();
@@ -74,7 +78,16 @@ public class ProjectManagerServiceImplTests extends ProjectManagerTest {
 	}
 	
 	@Test
-	public void test_addProject() {
+	public void test_viewUserByFirstName() throws ProjectManagerUserException {
+		List<User> users = getListOfUsers();
+		Mockito.when(userDao.viewUserByFirstName("xyz")).thenReturn(users);
+		List<User> output = service.viewUserByFirstName("xyz");
+		Assert.assertNotNull(output);
+		Assert.assertEquals(users.size(), output.size());	
+	}
+	
+	@Test
+	public void test_addProject() throws ProjectManagerUserException {
 		ProjectManagerRecord projectResponse = getRecord_projectInput();
 		Mockito.when(projectDao.addProject(projectResponse.project)).thenReturn(getProjectResponse());
 		Mockito.when(userDao.updateUser(projectResponse)).thenReturn(getUserResponse());
@@ -95,7 +108,7 @@ public class ProjectManagerServiceImplTests extends ProjectManagerTest {
 	
 
 	@Test
-	public void test_suspendProject() {
+	public void test_suspendProject() throws ProjectManagerProjectException, ProjectManagerTaskException {
 		Project project = getProjectResponse();
 		project.setStatus(true);
 		Mockito.when(projectDao.suspendProject(projectId)).thenReturn(project);
@@ -106,16 +119,16 @@ public class ProjectManagerServiceImplTests extends ProjectManagerTest {
 	
 
 	@Test
-	public void test_viewProject() {
+	public void test_viewProject() throws ProjectManagerProjectException, ProjectManagerTaskException {
 		List<Project> projects = getListOfProjects();
 		Mockito.when(projectDao.viewProject()).thenReturn(projects);
-		List<Project> output =service.viewProject();
+		List<ProjectRecord> output =service.viewProject();
 		Assert.assertNotNull(output);
 		Assert.assertEquals(projects.size(), output.size());	
 	}
 	
 	@Test
-	public void test_addTask() {
+	public void test_addTask() throws ProjectManagerUserException, ProjectManagerTaskException {
 		ProjectManagerRecord taskResponse = getRecord_taskInput();
 		Mockito.when(taskDao.addTask(taskResponse)).thenReturn(getTaskResponse());
 		ProjectManagerRecord output = service.addTask(taskResponse);
@@ -125,7 +138,7 @@ public class ProjectManagerServiceImplTests extends ProjectManagerTest {
 	
 
 	@Test
-	public void test_updateTask() {
+	public void test_updateTask() throws ProjectManagerTaskException {
 		Task taskResponse = getTaskResponse();
 		Mockito.when(taskDao.updateTask(taskResponse)).thenReturn(taskResponse);
 		Task output = service.updateTask(taskResponse);
@@ -135,21 +148,21 @@ public class ProjectManagerServiceImplTests extends ProjectManagerTest {
 	
 
 	@Test
-	public void test_endTask() {
-		Mockito.when(taskDao.endTask(taskId)).thenReturn(successMsg);
-		String output = service.endTask(taskId);
+	public void test_endTask() throws ProjectManagerTaskException {
+		Mockito.when(taskDao.endTask(taskId)).thenReturn(getTaskResponse());
+		Task output = service.endTask(taskId);
 		Assert.assertNotNull(output);
-		Assert.assertEquals(successMsg, output);	
+		Assert.assertEquals("completed", output.getStatus());	
 	}
 	
 
-	@Test
-	public void test_viewTask() {
-		List<Task> tasks = getListOfTasks();
-		Mockito.when(taskDao.viewTask()).thenReturn(tasks);
-		List<Task> output = service.viewTask();
-		Assert.assertNotNull(output);
-		Assert.assertEquals(tasks.size(), output.size());	
-	}
+//	@Test
+//	public void test_viewTask() throws ProjectManagerTaskException {
+//		List<Task> tasks = getListOfTasks();
+//		Mockito.when(taskDao.viewTask()).thenReturn(tasks);
+//		 List<ProjectManagerRecord> output = service.viewTask();
+//		Assert.assertNotNull(output);
+//		Assert.assertEquals(tasks.size(), output.size());	
+//	}
 }
 

@@ -9,6 +9,9 @@ public class ParentTaskRecord {
 		this.parentId = parentId;
 		this.parentTask = parentTask;
 	}
+	public ParentTaskRecord() {
+		// TODO Auto-generated constructor stub
+	}
 	public Long parentId = null;
 	public String parentTask = "";
 }

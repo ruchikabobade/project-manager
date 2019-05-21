@@ -1,5 +1,6 @@
 package com.projectmanager.projectmanagerservice.dao;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.junit.Assert;
@@ -12,6 +13,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import com.projectmanager.projectmanagerservice.ProjectManagerTest;
 import com.projectmanager.projectmanagerservice.entity.User;
+import com.projectmanager.projectmanagerservice.exception.ProjectManagerUserException;
 import com.projectmanager.projectmanagerservice.repository.UserRepository;
 
 @RunWith(MockitoJUnitRunner.Silent.class)
@@ -24,7 +26,7 @@ public class UserDaoTests extends ProjectManagerTest {
 	private UserRepository userRepository;
 	
 	@Test
-	public void test_addUser() {
+	public void test_addUser_successResponse() throws ProjectManagerUserException {
 		User userResponse = getUserResponse();
 		Mockito.when(userRepository.save(Mockito.any(User.class))).thenReturn(userResponse);
 		User output = userDao.addUser(getUserRecordResponse());
@@ -34,7 +36,7 @@ public class UserDaoTests extends ProjectManagerTest {
 	
 
 	@Test
-	public void test_updateUser() {
+	public void test_updateUser_successResponse() throws ProjectManagerUserException {
 		User userResponse = getUserResponse();
 		Mockito.when(userRepository.save(Mockito.any(User.class))).thenReturn(userResponse);
 		User output = userDao.updateUser(getRecord_user());
@@ -44,7 +46,7 @@ public class UserDaoTests extends ProjectManagerTest {
 	
 
 	@Test
-	public void test_deleteUser() {
+	public void test_deleteUser_successResponse() throws ProjectManagerUserException {
 		Mockito.doNothing().when(userRepository).deleteById(userId);
 		String output = userDao.deleteUser(userId);
 		Assert.assertNotNull(output);
@@ -53,11 +55,54 @@ public class UserDaoTests extends ProjectManagerTest {
 	
 
 	@Test
-	public void test_viewUser() {
+	public void test_viewUser_successResponse() throws ProjectManagerUserException {
 		List<User> users = getListOfUsers();
 		Mockito.when( userRepository.findAll()).thenReturn(users);
 		List<User> output = userDao.viewUser();
 		Assert.assertNotNull(output);
 		Assert.assertEquals(users.size(), output.size());	
 	}
+	
+	@Test
+	public void test_viewUserByFirstName_successResponse() throws ProjectManagerUserException {
+		List<User> users = getListOfUsers();
+		Mockito.when( userRepository.findAllByFirstName("xyz")).thenReturn(users);
+		List<User> output = userDao.viewUserByFirstName("xyz");
+		Assert.assertNotNull(output);
+		Assert.assertEquals(users.size(), output.size());	
+	}
+	
+	@Test
+	public void test_addUser_errorResponse() throws ProjectManagerUserException {
+		User userResponse = getUserResponse();
+		Mockito.doReturn(new Exception()).when(userRepository).save(userResponse);
+		try {
+		userDao.addUser(getUserRecordResponse());
+		} catch(Exception ex) {
+			 Assert.assertEquals("Error in adding user", ex.getMessage());	
+	}
+	}
+	
+
+	@Test
+	public void test_updateUser_errorResponse() throws ProjectManagerUserException {
+		User userResponse = getUserResponse();
+		Mockito.doReturn(new Exception()).when(userRepository).save(userResponse);
+		try {
+			userDao.updateUser(getRecord_user());
+		} catch(Exception ex) {
+			 Assert.assertEquals("Error in updating user", ex.getMessage());	
+	}	
+	}
+	
+	
+//	@Test
+//	public void test_viewUser_errorResponse() throws ProjectManagerUserException {
+//		Mockito.doReturn( new Exception()).when(userRepository).findAll();
+//		try {
+//			userDao.viewUser();
+//		} catch(Exception ex) {
+//			 Assert.assertEquals("Error in fetching user list", ex.getMessage());	
+//	}		
+//	}
 }

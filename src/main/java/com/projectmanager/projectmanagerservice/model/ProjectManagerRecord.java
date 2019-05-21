@@ -19,6 +19,10 @@ public class ProjectManagerRecord {
 		this.project = project;
 	}
 
+	public ProjectManagerRecord() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public Long taskId = 0L;
 	public String task = "";
 	public Date startDate = null;

@@ -7,7 +7,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.projectmanager.projectmanagerservice.entity.Project;
-import com.projectmanager.projectmanagerservice.entity.User;
 
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Long> {
