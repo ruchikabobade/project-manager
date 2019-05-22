@@ -56,9 +56,9 @@ public class ProjectDao {
 		logger.info("In ProjectDao, get project list");
 		return projectRepository.findAll();
 	}
-	public List<Project> viewProjectByProjectName(String project){
-		logger.info("In ProjectDao, get project list by project name ---" + project);
-		return projectRepository.findAllByProject(project);
+	public List<Project> viewProjectByProjectName(String projectName){
+		logger.info("In ProjectDao, get project list by project name ---" + projectName);
+		return projectRepository.findAllByProject(projectName);
 	}
 	
 	public Project getProject(Long projectId) {

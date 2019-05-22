@@ -14,12 +14,14 @@ import com.projectmanager.projectmanagerservice.ProjectManagerTest;
 import com.projectmanager.projectmanagerservice.dao.ProjectDao;
 import com.projectmanager.projectmanagerservice.dao.TaskDao;
 import com.projectmanager.projectmanagerservice.dao.UserDao;
+import com.projectmanager.projectmanagerservice.entity.ParentTask;
 import com.projectmanager.projectmanagerservice.entity.Project;
 import com.projectmanager.projectmanagerservice.entity.Task;
 import com.projectmanager.projectmanagerservice.entity.User;
 import com.projectmanager.projectmanagerservice.exception.ProjectManagerProjectException;
 import com.projectmanager.projectmanagerservice.exception.ProjectManagerTaskException;
 import com.projectmanager.projectmanagerservice.exception.ProjectManagerUserException;
+import com.projectmanager.projectmanagerservice.model.ParentTaskRecord;
 import com.projectmanager.projectmanagerservice.model.ProjectManagerRecord;
 import com.projectmanager.projectmanagerservice.model.ProjectRecord;
 import com.projectmanager.projectmanagerservice.model.UserRecord;
@@ -119,9 +121,14 @@ public class ProjectManagerServiceImplTests extends ProjectManagerTest {
 	
 
 	@Test
-	public void test_viewProject() throws ProjectManagerProjectException, ProjectManagerTaskException {
+	public void test_viewProject() throws ProjectManagerProjectException, ProjectManagerTaskException, ProjectManagerUserException {
 		List<Project> projects = getListOfProjects();
+		User user = getUserResponse();
+		List<Task> tasks = getListOfTasks();
 		Mockito.when(projectDao.viewProject()).thenReturn(projects);
+		Mockito.when(userDao.getUserByProjectId(Mockito.anyLong())).thenReturn(user);
+		Mockito.when(taskDao.viewTaskByProject(Mockito.anyLong())).thenReturn(tasks);
+		Mockito.when(taskDao.getCompletedTasks(Mockito.anyLong())).thenReturn(tasks);
 		List<ProjectRecord> output =service.viewProject();
 		Assert.assertNotNull(output);
 		Assert.assertEquals(projects.size(), output.size());	
@@ -155,14 +162,53 @@ public class ProjectManagerServiceImplTests extends ProjectManagerTest {
 		Assert.assertEquals("completed", output.getStatus());	
 	}
 	
+	@Test
+	public void test_viewProjectByProjectName() throws ProjectManagerProjectException, ProjectManagerTaskException {
+		List<Project> projects = getListOfProjects();
+		Mockito.when(projectDao.viewProjectByProjectName(Mockito.anyString())).thenReturn(projects);
+		List<Project> output =service.viewProjectByProjectName("xyz");
+		Assert.assertNotNull(output);
+		Assert.assertEquals(projects.size(), output.size());	
+	}
 
-//	@Test
-//	public void test_viewTask() throws ProjectManagerTaskException {
-//		List<Task> tasks = getListOfTasks();
-//		Mockito.when(taskDao.viewTask()).thenReturn(tasks);
-//		 List<ProjectManagerRecord> output = service.viewTask();
-//		Assert.assertNotNull(output);
-//		Assert.assertEquals(tasks.size(), output.size());	
-//	}
+	@Test
+	public void test_viewTask() throws ProjectManagerTaskException {
+	List<Task> tasks = getListOfTasks();
+	List<ParentTask> parentTasks = getListOfParentTasks();
+	Project project = getProjectResponse();
+	ParentTask parentTask = getParentTask();
+		Mockito.when(taskDao.viewTask()).thenReturn(tasks);
+		Mockito.when(taskDao.viewParentTask()).thenReturn(parentTasks);
+		Mockito.when(projectDao.getProject(Mockito.anyLong())).thenReturn(project);
+		Mockito.when(taskDao.getParentTaskById(Mockito.anyLong())).thenReturn(parentTask);
+		 List<ProjectManagerRecord> output = service.viewTask();
+		Assert.assertNotNull(output);
+		Assert.assertEquals(4, output.size());	
+	}
+	
+	@Test
+	public void test_viewTaskByParent() throws ProjectManagerTaskException {
+		List<ParentTask> parentTasks = getListOfParentTasks();
+		Mockito.when(taskDao.viewTaskByParent(Mockito.anyString())).thenReturn(parentTasks);
+		 List<ParentTask> output = service.viewTaskByParent("xyz");
+			Assert.assertNotNull(output);
+			Assert.assertEquals(parentTasks.size(), output.size());
+	}
+	
+	@Test
+	public void test_getProjectRecord() {
+		Project project = getProjectResponse();
+		ProjectRecord output = service.getProjectRecord(project);
+		Assert.assertNotNull(output);
+		Assert.assertEquals(project.getProject(), output.project);
+	}
+	
+	@Test
+	public void test_getParentRecord() {
+		ParentTask pt = getParentTask();
+		ParentTaskRecord output = service.getParentRecord(pt);
+		Assert.assertNotNull(output);
+		Assert.assertEquals(pt.getParentTask(), output.parentTask);
+	}
 }
 

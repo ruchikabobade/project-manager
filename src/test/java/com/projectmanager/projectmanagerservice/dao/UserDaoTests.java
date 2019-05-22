@@ -66,10 +66,19 @@ public class UserDaoTests extends ProjectManagerTest {
 	@Test
 	public void test_viewUserByFirstName_successResponse() throws ProjectManagerUserException {
 		List<User> users = getListOfUsers();
-		Mockito.when( userRepository.findAllByFirstName("xyz")).thenReturn(users);
+		Mockito.when( userRepository.findAllByFirstName(Mockito.anyString())).thenReturn(users);
 		List<User> output = userDao.viewUserByFirstName("xyz");
 		Assert.assertNotNull(output);
 		Assert.assertEquals(users.size(), output.size());	
+	}
+	
+	@Test
+	public void test_getUserByProjectId() throws ProjectManagerUserException {
+		User user = getUserResponse();
+		Mockito.when( userRepository.findByProjectId(Mockito.anyLong())).thenReturn(user);
+		User output = userDao.getUserByProjectId(1L);
+		Assert.assertNotNull(output);
+		Assert.assertEquals(user.getFirstName(), output.getFirstName());	
 	}
 	
 	@Test
@@ -95,14 +104,5 @@ public class UserDaoTests extends ProjectManagerTest {
 	}	
 	}
 	
-	
-//	@Test
-//	public void test_viewUser_errorResponse() throws ProjectManagerUserException {
-//		Mockito.doReturn( new Exception()).when(userRepository).findAll();
-//		try {
-//			userDao.viewUser();
-//		} catch(Exception ex) {
-//			 Assert.assertEquals("Error in fetching user list", ex.getMessage());	
-//	}		
-//	}
+
 }

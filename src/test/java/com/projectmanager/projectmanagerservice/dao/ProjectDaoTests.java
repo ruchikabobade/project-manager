@@ -67,4 +67,21 @@ public class ProjectDaoTests extends ProjectManagerTest{
 		Assert.assertEquals(projects.size(), output.size());	
 	}
 	
+	@Test
+	public void test_viewProjectByProjectName() {
+		List<Project> projects = getListOfProjects();
+		Mockito.when(projectRepository.findAllByProject(Mockito.anyString())).thenReturn(projects);
+		List<Project> output =projectDao.viewProjectByProjectName("xyz");
+		Assert.assertNotNull(output);
+		Assert.assertEquals(projects.size(), output.size());	
+	}
+	
+	@Test
+	public void test_getProject() {
+		Project project = getProjectResponse();
+		Mockito.when(projectRepository.findByProjectId(Mockito.anyLong())).thenReturn(project);
+		Project output =projectDao.getProject(1L);
+		Assert.assertNotNull(output);
+		Assert.assertEquals(project.getProject(), output.getProject());	
+	}
 }

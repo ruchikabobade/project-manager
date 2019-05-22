@@ -132,5 +132,10 @@ public class ProjectManagerTest {
 			tasks.add(task2);
 			return tasks;
 	 }
+	 
+	 public ParentTask getParentTask() {
+		 ParentTask task1 = new ParentTask( "xyz");	
+		 return task1;
+	 }
 
 }
