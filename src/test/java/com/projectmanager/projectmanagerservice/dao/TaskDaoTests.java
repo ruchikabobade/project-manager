@@ -127,4 +127,61 @@ public class TaskDaoTests extends ProjectManagerTest{
 		Assert.assertEquals(task.getParentTask(), output.parentTask);	
 	}
 	
+	@Test
+	public void test_getTaskById() throws ProjectManagerTaskException {
+		Task task = getTaskResponse();
+		Mockito.when(taskRepository.findByTaskId(Mockito.anyLong())).thenReturn(task);
+		Task output = taskDao.getTaskById(1l);
+		Assert.assertNotNull(output);
+		Assert.assertEquals(task.getTask(), output.getTask());	
+	}
+	
+	@Test
+	public void test_addTask_exception() throws ProjectManagerTaskException {
+		Task taskResponse = getTaskResponse();
+		Mockito.when(taskRepository.save(Mockito.any(Task.class))).thenReturn(taskResponse);
+		String exception = "com.projectmanager.projectmanagerservice.exception.ProjectManagerTaskException";
+		try {
+			 taskDao.addTask(null);
+		}catch(Exception ex) {
+			 Assert.assertEquals(exception, ex.toString());	
+		}
+	}
+	
+	@Test
+	public void test_addParentTask_exception() throws ProjectManagerTaskException {
+		ParentTask taskResponse = getParentTask();
+		Mockito.when(parentTaskRepository.save(Mockito.any(ParentTask.class))).thenReturn(taskResponse);
+		String exception = "com.projectmanager.projectmanagerservice.exception.ProjectManagerTaskException";
+		try {
+			taskDao.addParentTask(null);
+		}catch(Exception ex) {
+			 Assert.assertEquals(exception, ex.toString());	
+		}
+	}
+	
+	@Test
+	public void test_updateTask_exception() throws ProjectManagerTaskException {
+		Task taskResponse = getTaskResponse();
+		Mockito.when(taskRepository.save(taskResponse)).thenReturn(taskResponse);	
+		String exception = "com.projectmanager.projectmanagerservice.exception.ProjectManagerTaskException";
+		try {
+			taskDao.updateTask(null);
+		}catch(Exception ex) {
+			 Assert.assertEquals(exception, ex.toString());	
+		}
+	}
+	
+	@Test
+	public void test_endTask_exception() throws ProjectManagerTaskException {
+		Task taskResponse = getTaskResponse();
+		Mockito.when(taskRepository.findByTaskId(Mockito.anyLong())).thenReturn(taskResponse);
+	    Mockito.when(taskRepository.save(taskResponse)).thenReturn(taskResponse);
+		String exception = "com.projectmanager.projectmanagerservice.exception.ProjectManagerTaskException";
+		try {
+			 taskDao.endTask(null);
+		}catch(Exception ex) {
+			 Assert.assertEquals(exception, ex.toString());	
+		}
+	}
 }

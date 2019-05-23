@@ -44,4 +44,9 @@ public interface ProjectManagerService {
 	public List<ProjectManagerRecord> viewTask()  throws ProjectManagerTaskException ;
 	
 	public List<ParentTask> viewTaskByParent(String parentTask)  throws ProjectManagerTaskException ;
+	
+	public ProjectManagerRecord getTaskByTaskId(Long taskId);
+	
+	public List<ProjectManagerRecord> viewTaskByProjectId(Long ProjectId)  throws ProjectManagerTaskException ;
+	
 }

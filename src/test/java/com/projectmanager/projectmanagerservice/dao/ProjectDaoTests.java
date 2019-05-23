@@ -14,6 +14,7 @@ import com.projectmanager.projectmanagerservice.ProjectManagerTest;
 import com.projectmanager.projectmanagerservice.entity.Project;
 import com.projectmanager.projectmanagerservice.entity.User;
 import com.projectmanager.projectmanagerservice.exception.ProjectManagerUserException;
+import com.projectmanager.projectmanagerservice.model.ProjectRecord;
 import com.projectmanager.projectmanagerservice.repository.ProjectRepository;
 import com.projectmanager.projectmanagerservice.repository.UserRepository;
 
@@ -35,6 +36,16 @@ public class ProjectDaoTests extends ProjectManagerTest{
 		Assert.assertEquals(projectResponse.getProject(), output.getProject());	
 	}
 	
+	@Test
+	public void test_addProject_setDate() throws ProjectManagerUserException {
+		Project projectResponse = getProjectResponse();
+		ProjectRecord pr = getRecord_projectInput().project;
+		pr.setDate =true;
+		Mockito.when(projectRepository.save(Mockito.any(Project.class))).thenReturn(projectResponse);
+		Project output = projectDao.addProject(pr);
+		Assert.assertNotNull(output);
+		Assert.assertEquals(projectResponse.getProject(), output.getProject());	
+	}
 
 	@Test
 	public void test_updateProject() {
@@ -84,4 +95,24 @@ public class ProjectDaoTests extends ProjectManagerTest{
 		Assert.assertNotNull(output);
 		Assert.assertEquals(project.getProject(), output.getProject());	
 	}
+	
+//	@Test
+//	public void test_addProject_error() throws ProjectManagerUserException {
+//		String exception = "java.lang.NullPointerException";
+//		try {
+//			projectDao.addProject(null);
+//		}catch(Exception ex) {
+//			 Assert.assertEquals(exception, ex.toString());	
+//		}
+//	}
+//	
+//	@Test
+//	public void test_updateProject_error() {
+//		String exception = "java.lang.NullPointerException";
+//		try {
+//			projectDao.updateProject(null);
+//		}catch(Exception ex) {
+//			 Assert.assertEquals(exception, ex.toString());	
+//		}
+//	}
 }

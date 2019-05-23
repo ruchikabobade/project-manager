@@ -140,12 +140,12 @@ public class ProjectManagerControllerTests extends ProjectManagerTest {
 	
 
 	@Test
-	public void test_updateTask() throws ProjectManagerTaskException {
-		Task taskResponse = getTaskResponse();
-		Mockito.when(service.updateTask(taskResponse)).thenReturn(taskResponse);
-		Task output = projectManagerController.updateTask(taskResponse);
+	public void test_updateTask() throws ProjectManagerTaskException, ProjectManagerUserException {
+		ProjectManagerRecord taskResponse = getRecord_taskInput();
+		Mockito.when(service.addTask(taskResponse)).thenReturn(getRecord_task());
+		ProjectManagerRecord output = projectManagerController.updateTask(taskResponse);
 		Assert.assertNotNull(output);
-		Assert.assertEquals(taskResponse.getTask(), output.getTask());	
+		Assert.assertEquals(taskResponse.task, output.task);
 	}
 	
 
@@ -156,7 +156,6 @@ public class ProjectManagerControllerTests extends ProjectManagerTest {
 		Assert.assertNotNull(output);
 		Assert.assertEquals("completed", output.getStatus());	
 	}
-	
 
 	@Test
 	public void test_viewTask() throws ProjectManagerTaskException {
@@ -172,6 +171,23 @@ public class ProjectManagerControllerTests extends ProjectManagerTest {
 		List<ParentTask> tasks =  getListOfParentTasks();
 		Mockito.when(service.viewTaskByParent("pqr")).thenReturn(tasks);
 		List<ParentTask> output = projectManagerController.viewTaskByParent("pqr");
+		Assert.assertNotNull(output);
+		Assert.assertEquals(tasks.size(), output.size());	
+	}
+	
+	@Test
+	public void test_viewTaskById() throws ProjectManagerTaskException {
+		Mockito.when(service.getTaskByTaskId(Mockito.anyLong())).thenReturn( getRecord_task());
+		ProjectManagerRecord output = projectManagerController.viewTaskById(1l);
+		Assert.assertNotNull(output);
+		Assert.assertEquals(getRecord_task().task, output.task);	
+	}
+	
+	@Test
+	public void test_viewTaskByProject() throws ProjectManagerTaskException {
+		List<ProjectManagerRecord> tasks =  getRecords_task();
+		Mockito.when(service.viewTaskByProjectId(Mockito.anyLong())).thenReturn( tasks);
+		List<ProjectManagerRecord> output = projectManagerController.viewTaskByProject(1l);
 		Assert.assertNotNull(output);
 		Assert.assertEquals(tasks.size(), output.size());	
 	}

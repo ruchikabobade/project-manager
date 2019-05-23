@@ -35,93 +35,122 @@ public class ProjectManagerController {
 	
 	@PostMapping(path="/projectmanager/service/user/addUser")
 	public User addUser(@RequestBody UserRecord user ) throws ProjectManagerUserException {
-		logger.info("In ProjectManagerController Add user ---" + user.toString());
+		logger.info("-------------------------------------------------------------");
+		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : addUser() , action : adding user , data : "+  user.toString() + "}");
 		return service.addUser(user);
 	}
 	
 	@PutMapping(path="/projectmanager/service/user/updateUser")
 	public User updateUser(@RequestBody ProjectManagerRecord user)  throws ProjectManagerUserException{
-		logger.info("In ProjectManagerController Update user ----" + user.toString());
+		logger.info("-------------------------------------------------------------");
+		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : updateUser() , action : updating user , data : "+  user.toString() + "}");
 		return service.updateUser(user);
 	}
 	
 	@DeleteMapping(path="/projectmanager/service/user/deleteUser/{userId}")
 	public String deleteUser(@PathVariable Long userId) throws ProjectManagerUserException {
-		logger.info("In ProjectManagerController Delete user for user Id ---- " + userId);
+		logger.info("-------------------------------------------------------------");
+		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : deleteUser() , action : deleting user for given userId , data : "+  userId + "}");
 		return service.deleteUser(userId);
 	}
 	
 	@GetMapping(path="/projectmanager/service/user/viewUser")
 	public List<User> viewUser() throws ProjectManagerUserException{
-		logger.info("In ProjectManagerController Fetch the list of users");
+		logger.info("-------------------------------------------------------------");
+		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : viewUser() , action : fetching the list of users , data :  , }");
 		return service.viewUser();
 	}
 	
 
 	@GetMapping(path="/projectmanager/service/user/viewUserByFirstName/{firstName}")
 	public List<User> viewUserByFirstName(@PathVariable String firstName) throws ProjectManagerUserException{
-		logger.info("In ProjectManagerController Fetch the list of users filtered by first name ------ " + firstName);
+		logger.info("-------------------------------------------------------------");
+		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : viewUserByFirstName() , action : Fetching user based on firstName  , data : "+  firstName + "}");
 		return service.viewUserByFirstName(firstName);
 	}
 	
 	@PostMapping(path="/projectmanager/service/project/addProject")
 	public ProjectManagerRecord addProject(@RequestBody ProjectManagerRecord project ) throws ProjectManagerUserException{
-		logger.info("In ProjectManagerController Add project ----- " + project.toString());
+		logger.info("-------------------------------------------------------------");
+		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : addProject() , action : adding project , data : "+  project.toString() + "}");
 		return service.addProject(project);
 	}
 	
 	@PutMapping(path="/projectmanager/service/project/updateProject")
 	public Project updateProject(@RequestBody Project project) {
-		logger.info("In ProjectManagerController Update project -------" + project.toString());
+		logger.info("-------------------------------------------------------------");
+		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : updateProject() , action : updating project , data : "+  project.toString() + "}");
 		return service.updateProject(project);
 	}
 	
 	@DeleteMapping(path="/projectmanager/service/project/suspendProject/{projectId}")
 	public Project suspendProject(@PathVariable Long projectId) throws ProjectManagerProjectException, ProjectManagerTaskException {
-		logger.info("In ProjectManagerController Suspend project for project Id --------" + projectId);
+		logger.info("-------------------------------------------------------------");
+		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : suspendProject() , action : suspending project based on projectId , data : "+  projectId + "}");
 		return service.suspendProject(projectId);
 	}
 	
 	@GetMapping(path="/projectmanager/service/project/viewProject")
 	public List<ProjectRecord> viewProject() throws ProjectManagerProjectException, ProjectManagerTaskException{
-		logger.info("In ProjectManagerController Fetch the list of projects");
+		logger.info("-------------------------------------------------------------");
+		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : viewProject() , action : fetching list of projects , data :  }");
 		return service.viewProject();
 	}
 	
 	@GetMapping(path="/projectmanager/service/project/viewProjectByProject/{project}")
 	public List<Project> viewProjectByProjectName(@PathVariable String project){
-		logger.info("In ProjectManagerController Fetch the list of projects filtered by project name ------" + project);
+		logger.info("-------------------------------------------------------------");
+		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : viewProjectByProjectName() , action : fetching project list based on projectName , data : "+  project + "}");
 		return service.viewProjectByProjectName(project);
 	}
 	
 	@PostMapping(path="/projectmanager/service/task/addtask")
 	public ProjectManagerRecord addTask(@RequestBody ProjectManagerRecord task ) throws ProjectManagerUserException, ProjectManagerTaskException {
-		logger.info("In ProjectManagerController Add task -----" + task.toString());
+		logger.info("-------------------------------------------------------------");
+		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : addTask() , action : adding task , data : "+  task.toString() + "}");
 		return service.addTask(task);
 	}
 	
 	@PutMapping(path="/projectmanager/service/task/updateTask")
-	public Task updateTask(@RequestBody Task task) throws ProjectManagerTaskException {
-		logger.info("In ProjectManagerController Update task -------" + task.toString());
-		return service.updateTask(task);
+	public ProjectManagerRecord updateTask(@RequestBody ProjectManagerRecord task) throws ProjectManagerTaskException, ProjectManagerUserException {
+		logger.info("-------------------------------------------------------------");
+		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : updateTask() , action : updating task , data : "+  task.toString() + "}");
+		return service.addTask(task);
 	}
 	
 	@DeleteMapping(path="/projectmanager/service/task/endTask/{taskId}")
 	public Task endTask(@PathVariable Long taskId) throws ProjectManagerTaskException {
-		logger.info("In ProjectManagerController End task for task Id ---- " + taskId);
+		logger.info("-------------------------------------------------------------");
+		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : endTask() , action : ending task based on taskId , data : "+  taskId + "}");
 		return service.endTask(taskId);
 	}
 	
 	@GetMapping(path="/projectmanager/service/task/viewTask")
 	public List<ProjectManagerRecord> viewTask() throws ProjectManagerTaskException{
-		logger.info("In ProjectManagerController Fetch the list of tasks");
+		logger.info("-------------------------------------------------------------");
+		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : viewTask() , action : fetching list of tasks , data :  }");
 		return service.viewTask();
 	}
 	
 	@GetMapping(path="/projectmanager/service/task/viewTaskByParent/{parentTask}")
 	public List<ParentTask> viewTaskByParent(@PathVariable String parentTask) throws ProjectManagerTaskException{
-		logger.info("In ProjectManagerController Fetch the list of parent tasks with task ------" + parentTask);
+		logger.info("-------------------------------------------------------------");
+		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : viewTaskByParent() , action : fetching list of parent tasks based on taskName , data : " +parentTask+" }");
 		return service.viewTaskByParent(parentTask);
+	}
+	
+	@GetMapping(path="/projectmanager/service/task/viewTaskById/{taskId}")
+	public ProjectManagerRecord viewTaskById(@PathVariable Long taskId) throws ProjectManagerTaskException{
+		logger.info("-------------------------------------------------------------");
+		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : viewTaskById() , action : fetching task based on taskId , data : " +taskId+" }");
+		return service.getTaskByTaskId(taskId);
+	}
+	
+	@GetMapping(path="/projectmanager/service/task/viewTaskByProjectId/{projectId}")
+	public List<ProjectManagerRecord> viewTaskByProject(@PathVariable Long projectId) throws ProjectManagerTaskException{
+		logger.info("-------------------------------------------------------------");
+		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : viewTaskByProject() , action : fetching list of tasks based on projectId , data : "+projectId+" }");
+		return service.viewTaskByProjectId(projectId);
 	}
 	
 }

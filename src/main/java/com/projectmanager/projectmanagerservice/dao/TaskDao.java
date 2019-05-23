@@ -28,6 +28,7 @@ public class TaskDao {
 		logger.info("In TaskDao, Adding task ----------" + projectManagerRecord.toString());
 		Task task = new Task();
 		task.setTask(projectManagerRecord.task);
+		task.setTaskId(projectManagerRecord.taskId);
 		task.setParentId(projectManagerRecord.parentTask.parentId);
 		task.setEndDate(projectManagerRecord.endDate);
 		task.setStartDate(projectManagerRecord.startDate);
@@ -46,6 +47,7 @@ public class TaskDao {
 		try {
 			logger.info("In TaskDao, Adding Parent task ----------" + projectManagerRecord.toString());
 			ParentTask parentTask = new ParentTask();
+			parentTask.setParentId(projectManagerRecord.taskId);
 			parentTask.setParentTask(projectManagerRecord.task);
 		return parentTaskRepository.save(parentTask);
 		} catch(Exception ex){
@@ -138,6 +140,8 @@ public class TaskDao {
 		return parentTaskRepository.getOne(id);
 	}
 	
-
-
+	public Task getTaskById(Long id) {
+		logger.info("In TaskDao, getting task by id ----" + id);
+		return taskRepository.findByTaskId(id);
+	}
 }

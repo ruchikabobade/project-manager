@@ -112,14 +112,18 @@ public class ProjectManagerServiceImplTests extends ProjectManagerTest {
 	@Test
 	public void test_suspendProject() throws ProjectManagerProjectException, ProjectManagerTaskException, ProjectManagerUserException {
 		Project project = getProjectResponse();
+		List<Task> tasks = getListOfTasks();
 		project.setStatus(true);
-		Mockito.when(projectDao.suspendProject(projectId)).thenReturn(project);
+		Task taskResponse = getTaskResponse();
+		Mockito.when(projectDao.suspendProject(Mockito.anyLong())).thenReturn(project);
+		Mockito.when(taskDao.viewTaskByProject(Mockito.anyLong())).thenReturn(tasks);
+		Mockito.when(taskDao.updateTask(Mockito.any(Task.class))).thenReturn(taskResponse);
 		Project output = service.suspendProject(projectId);
 		Assert.assertNotNull(output);
 		Assert.assertEquals(true, output.getStatus());	
 	}
 	
-
+//
 	@Test
 	public void test_viewProject() throws ProjectManagerProjectException, ProjectManagerTaskException, ProjectManagerUserException {
 		List<Project> projects = getListOfProjects();
@@ -138,6 +142,16 @@ public class ProjectManagerServiceImplTests extends ProjectManagerTest {
 	public void test_addTask() throws ProjectManagerUserException, ProjectManagerTaskException {
 		ProjectManagerRecord taskResponse = getRecord_taskInput();
 		Mockito.when(taskDao.addTask(taskResponse)).thenReturn(getTaskResponse());
+		ProjectManagerRecord output = service.addTask(taskResponse);
+		Assert.assertNotNull(output);
+		Assert.assertEquals(taskResponse.taskId, output.taskId);	
+	}
+	
+	@Test
+	public void test_addTask_isParent() throws ProjectManagerUserException, ProjectManagerTaskException {
+		ProjectManagerRecord taskResponse = getRecord_taskInput();
+		taskResponse.isParent = true;
+		Mockito.when(taskDao.addParentTask(taskResponse)).thenReturn(getParentTask());
 		ProjectManagerRecord output = service.addTask(taskResponse);
 		Assert.assertNotNull(output);
 		Assert.assertEquals(taskResponse.taskId, output.taskId);	
@@ -196,6 +210,35 @@ public class ProjectManagerServiceImplTests extends ProjectManagerTest {
 	}
 	
 	@Test
+	public void test_getTaskByTaskId() throws ProjectManagerTaskException {
+		Mockito.when(taskDao.getTaskById(Mockito.anyLong())).thenReturn(getTaskResponse());
+		 ProjectManagerRecord output = service.getTaskByTaskId(1l);
+			Assert.assertNotNull(output);
+			Assert.assertEquals(getTaskResponse().getTask(), output.task );
+	}
+	
+	@Test
+	public void test_getTaskByTaskId_exception() throws ProjectManagerTaskException {
+		Mockito.when(taskDao.getParentTaskById(Mockito.anyLong())).thenReturn(getParentTask());
+		 ProjectManagerRecord output = service.getTaskByTaskId(1l);
+			Assert.assertNotNull(output);
+			Assert.assertEquals(getParentTask().parentTask, output.task );
+	}
+	
+	@Test
+	public void test_viewTaskByProjectId() throws ProjectManagerTaskException {
+		List<Task> tasks = getListOfTasks();
+		Project project = getProjectResponse();
+		ParentTask parentTask = getParentTask();
+		Mockito.when(taskDao.viewTaskByProject(Mockito.anyLong())).thenReturn(tasks);
+		Mockito.when(projectDao.getProject(Mockito.anyLong())).thenReturn(project);
+		Mockito.when(taskDao.getParentTaskById(Mockito.anyLong())).thenReturn(parentTask);
+		 List<ProjectManagerRecord> output = service.viewTaskByProjectId(1l);
+		Assert.assertNotNull(output);
+		Assert.assertEquals(2, output.size());	
+	}
+	
+	@Test
 	public void test_getProjectRecord() {
 		Project project = getProjectResponse();
 		ProjectRecord output = service.getProjectRecord(project);
@@ -209,6 +252,36 @@ public class ProjectManagerServiceImplTests extends ProjectManagerTest {
 		ParentTaskRecord output = service.getParentRecord(pt);
 		Assert.assertNotNull(output);
 		Assert.assertEquals(pt.getParentTask(), output.parentTask);
+	}
+	
+	@Test
+	public void test_suspendProject_error() throws Exception{
+		String exception = "com.projectmanager.projectmanagerservice.exception.ProjectManagerProjectException";
+		try {
+			service.suspendProject(1l);
+		}catch(Exception ex) {
+			 Assert.assertEquals(exception, ex.toString());	
+		}
+	}
+	
+	@Test
+	public void test_addProject_error() throws Exception{
+		String exception = "com.projectmanager.projectmanagerservice.exception.ProjectManagerUserException";
+		try {
+			service.addProject(getRecord_project());
+		}catch(Exception ex) {
+			 Assert.assertEquals(exception, ex.toString());	
+		}
+	}
+	
+	@Test
+	public void test_addTask_error() throws Exception{
+		String exception = "com.projectmanager.projectmanagerservice.exception.ProjectManagerTaskException";
+		try {
+			service.addTask(getRecord_taskInput());
+		}catch(Exception ex) {
+			 Assert.assertEquals(exception, ex.toString());	
+		}
 	}
 }
 

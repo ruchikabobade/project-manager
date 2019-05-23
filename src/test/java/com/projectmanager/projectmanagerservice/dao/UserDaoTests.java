@@ -1,5 +1,7 @@
 package com.projectmanager.projectmanagerservice.dao;
 
+import static org.mockito.Mockito.mock;
+
 import java.sql.SQLException;
 import java.util.List;
 
@@ -14,6 +16,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 import com.projectmanager.projectmanagerservice.ProjectManagerTest;
 import com.projectmanager.projectmanagerservice.entity.User;
 import com.projectmanager.projectmanagerservice.exception.ProjectManagerUserException;
+import com.projectmanager.projectmanagerservice.model.ProjectManagerRecord;
+import com.projectmanager.projectmanagerservice.model.UserRecord;
 import com.projectmanager.projectmanagerservice.repository.UserRepository;
 
 @RunWith(MockitoJUnitRunner.Silent.class)
@@ -44,6 +48,18 @@ public class UserDaoTests extends ProjectManagerTest {
 		Assert.assertEquals(userResponse.getFirstName(), output.getFirstName());	
 	}
 	
+//	@Test
+//	public void test_updateUser_() throws ProjectManagerUserException {
+//		User userResponse = getUserResponse();
+//		ProjectManagerRecord pr = getRecord_user();
+//		pr.taskId = null;
+//		pr.parentTask.parentId = 1l;
+//		Mockito.when(userRepository.save(Mockito.any(User.class))).thenReturn(userResponse);
+//		User output = userDao.updateUser(pr);
+//		Assert.assertNotNull(output);
+//		Assert.assertEquals(userResponse.getFirstName(), output.getFirstName());	
+//	}
+//	
 
 	@Test
 	public void test_deleteUser_successResponse() throws ProjectManagerUserException {
@@ -80,29 +96,25 @@ public class UserDaoTests extends ProjectManagerTest {
 		Assert.assertNotNull(output);
 		Assert.assertEquals(user.getFirstName(), output.getFirstName());	
 	}
-	
-	@Test
-	public void test_addUser_errorResponse() throws ProjectManagerUserException {
-		User userResponse = getUserResponse();
-		Mockito.doReturn(new Exception()).when(userRepository).save(userResponse);
-		try {
-		userDao.addUser(getUserRecordResponse());
-		} catch(Exception ex) {
-			 Assert.assertEquals("Error in adding user", ex.getMessage());	
-	}
-	}
-	
 
 	@Test
 	public void test_updateUser_errorResponse() throws ProjectManagerUserException {
-		User userResponse = getUserResponse();
-		Mockito.doReturn(new Exception()).when(userRepository).save(userResponse);
+		String exception = "com.projectmanager.projectmanagerservice.exception.ProjectManagerUserException";
 		try {
-			userDao.updateUser(getRecord_user());
+			userDao.updateUser(null);
 		} catch(Exception ex) {
-			 Assert.assertEquals("Error in updating user", ex.getMessage());	
+			 Assert.assertEquals(exception, ex.toString());	
 	}	
 	}
 	
+	@Test
+	public void test_addUser_errorResponse() throws ProjectManagerUserException {
+		String exception = "com.projectmanager.projectmanagerservice.exception.ProjectManagerUserException";
+		try {
+			userDao.addUser(null);
+		} catch(Exception ex) {
+			 Assert.assertEquals(exception, ex.toString());	
+	}	
+	}
 
 }

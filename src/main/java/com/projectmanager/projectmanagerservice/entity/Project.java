@@ -38,6 +38,9 @@ public class Project {
 	@Column(name="status")
 	boolean status = false;
 	
+	@Column(name="setDate")
+	boolean setDate = false;
+	
 	public Project() {}
 	
 	public Project(String project, Date startDate, Date endDate, int priority, boolean status) {
@@ -94,6 +97,14 @@ public class Project {
 
 	public void setStatus(boolean status) {
 		this.status = status;
+	}
+
+	public boolean isSetDate() {
+		return setDate;
+	}
+
+	public void setSetDate(boolean setDate) {
+		this.setDate = setDate;
 	}
 	
 }
