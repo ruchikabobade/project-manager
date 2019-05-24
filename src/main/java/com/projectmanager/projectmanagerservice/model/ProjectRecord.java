@@ -16,7 +16,7 @@ public class ProjectRecord {
 		this.tasks = tasks;
 		this.completedTasks = completedTasks;
 	}
-	public Long projectId = null;
+	public Long projectId = 0l;
 	public String project =  "";
 	public boolean setDate = false;
 	public Date startDate = null;

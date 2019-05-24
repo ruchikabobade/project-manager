@@ -27,7 +27,7 @@ public interface ProjectManagerService {
 	
 	public ProjectManagerRecord addProject(ProjectManagerRecord project) throws ProjectManagerUserException;
 	
-	public Project updateProject(Project project);
+	public ProjectManagerRecord updateProject(ProjectManagerRecord project) throws ProjectManagerUserException, ProjectManagerTaskException;
 	
 	public Project suspendProject(Long projectId) throws ProjectManagerProjectException, ProjectManagerTaskException;
 	
@@ -37,13 +37,15 @@ public interface ProjectManagerService {
 
 	public ProjectManagerRecord addTask(ProjectManagerRecord task) throws ProjectManagerUserException, ProjectManagerTaskException ;
 	
-	public Task updateTask(Task task)  throws ProjectManagerTaskException ;
+	public ProjectManagerRecord updateTask(ProjectManagerRecord task)  throws ProjectManagerTaskException ;
 	
 	public Task endTask(Long taskId)  throws ProjectManagerTaskException ;
 	
 	public List<ProjectManagerRecord> viewTask()  throws ProjectManagerTaskException ;
 	
 	public List<ParentTask> viewTaskByParent(String parentTask)  throws ProjectManagerTaskException ;
+	
+	public List<ParentTask> viewParentTask() ;
 	
 	public ProjectManagerRecord getTaskByTaskId(Long taskId);
 	

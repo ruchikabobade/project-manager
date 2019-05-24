@@ -35,21 +35,21 @@ public class ProjectManagerTest {
 		
 		ProjectRecord project = new ProjectRecord(1L, "XYZ", false, null, null, 0,0,0);
 		UserRecord user = new UserRecord(0L, "XYZ", "POLO", "12345");	
-		ProjectManagerRecord record = new ProjectManagerRecord(0L, "", null, null, 0, "", false, null, user, project);	
+		ProjectManagerRecord record = new ProjectManagerRecord(0L, "", null, null, 0, false, false, null, user, project);	
 		return record;
 	}
 	
 	public ProjectManagerRecord getRecord_projectInput() {
 		ProjectRecord project = new ProjectRecord(0L, "XYZ", false, null, null, 0,0,0);
 		UserRecord user = new UserRecord(1L, "XYZ", "POLO", "12345");	
-		ProjectManagerRecord record = new ProjectManagerRecord(0L, "", null, null, 0, "", false, null, user, project);	
+		ProjectManagerRecord record = new ProjectManagerRecord(0L, "", null, null, 0, false, false, null, user, project);	
 		return record;	
 	}
 	
 	public ProjectManagerRecord getRecord_project() {
 		ProjectRecord project = new ProjectRecord(1L, "XYZ", false, null, null, 10,0,0);
 		UserRecord user = new UserRecord(0L, "XYZ", "POLO", "12345");	
-		ProjectManagerRecord record = new ProjectManagerRecord(0L, "", null, null, 0, "", false, null, user, project);	
+		ProjectManagerRecord record = new ProjectManagerRecord(0L, "", null, null, 0, false, false, null, user, project);	
 		return record;
 	}
 	
@@ -57,7 +57,7 @@ public class ProjectManagerTest {
 		ProjectRecord project = new ProjectRecord(1L, "XYZ", false, null, null, 0,0,0);
 		UserRecord user = new UserRecord(1L, "XYZ", "POLO", "12345");	
 		ParentTaskRecord parent = new ParentTaskRecord(1L,"polo");
-		ProjectManagerRecord record = new ProjectManagerRecord(0L, "xyz", new Date(), new Date(), 10, "completed", false, parent, user, project);	
+		ProjectManagerRecord record = new ProjectManagerRecord(0L, "xyz", new Date(), new Date(), 10, true, false, parent, user, project);	
 		return record;
 	}
 	
@@ -65,7 +65,7 @@ public class ProjectManagerTest {
 		ProjectRecord project = new ProjectRecord(1L, "XYZ", false, null, null, 0,0,0);
 		UserRecord user = new UserRecord(0L, "XYZ", "POLO", "12345");	
 		ParentTaskRecord parent = new ParentTaskRecord(0L,"polo");
-		ProjectManagerRecord record = new ProjectManagerRecord(1L, "xyz", new Date(), new Date(), 10, "completed", false, parent, user, project);	
+		ProjectManagerRecord record = new ProjectManagerRecord(1L, "xyz", new Date(), new Date(), 10, true, false, parent, user, project);	
 		return record;
 	}
 	
@@ -74,7 +74,7 @@ public class ProjectManagerTest {
 		ProjectRecord project = new ProjectRecord(1L, "XYZ", false, null, null, 0,0,0);
 		UserRecord user = new UserRecord(0L, "XYZ", "POLO", "12345");	
 		ParentTaskRecord parent = new ParentTaskRecord(0L,"polo");
-		ProjectManagerRecord record = new ProjectManagerRecord(1L, "xyz", new Date(), new Date(), 10, "completed", false, parent, user, project);	
+		ProjectManagerRecord record = new ProjectManagerRecord(1L, "xyz", new Date(), new Date(), 10, true, false, parent, user, project);	
 		records.add(record);
 		return records;
 	}
@@ -112,14 +112,14 @@ public class ProjectManagerTest {
 	}
 	
 	public Task getTaskResponse() {
-		Task task = new Task(1l, 1l, "xyz", new Date(), new Date(), 10, "completed");	
+		Task task = new Task(1l, 1l, "xyz", new Date(), new Date(), 10, true);	
 		return task;
 	}
 	
 	public List<Task> getListOfTasks(){
 		List<Task> tasks = new ArrayList();
-		Task task1 = new Task(1l, 1l, "xyz", new Date(), new Date(), 10, "completed");	
-		Task task2 = new Task(1l, 1l, "xyz", new Date(), new Date(), 10, "completed");	
+		Task task1 = new Task(1l, 1l, "xyz", new Date(), new Date(), 10, true);	
+		Task task2 = new Task(1l, 1l, "xyz", new Date(), new Date(), 10, true);	
 		tasks.add(task1);
 		tasks.add(task2);
 		return tasks;

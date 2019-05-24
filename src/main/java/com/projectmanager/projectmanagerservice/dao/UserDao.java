@@ -19,22 +19,22 @@ public class UserDao {
 	private UserRepository userRepository;
 	
 	public User addUser(UserRecord userRecord) throws ProjectManagerUserException {
+		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : addUser() , action : adding user , data : "+  userRecord.toString() + "}");
 		try {
-			logger.info("In UserDao, Adding user ------" + userRecord.toString());
 		User user = new User();
 		user.setFirstName(userRecord.firstName);
 		user.setLastName(userRecord.lastName);
 		user.setEmployeeId(userRecord.employeeId);
 		return userRepository.save(user);
 		} catch(Exception e) {
-			logger.info("Exception occured while adding user -- " + e.getMessage());
+			logger.info("{ loggerType : error , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : addUser() , action : adding user , errorMessage : " +e.getLocalizedMessage() + "}");
 			throw new ProjectManagerUserException(500, "Error in adding user");
 		}
 	}
 	
 	public User updateUser(ProjectManagerRecord projectManagerRecord) throws ProjectManagerUserException {
+		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : updateUser() , action : updating user , data : "+  projectManagerRecord.toString() + "}");
 		try {
-			logger.info("In UserDao, updating user ------" + projectManagerRecord.toString());
 		User user = new User();
 		user.setFirstName(projectManagerRecord.user.firstName);
 		user.setLastName(projectManagerRecord.user.lastName);
@@ -48,52 +48,29 @@ public class UserDao {
 		user.setTaskId(projectManagerRecord.taskId);
 		return userRepository.save(user);
 		}catch(Exception e) {
-				logger.info("Exception occured while updating user -- " + e.getMessage());
+			logger.info("{ loggerType : error , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : updateUser() , action : updating user , errorMessage : " +e.getLocalizedMessage() + "}");
 				throw new ProjectManagerUserException(500, "Error in updating user");
 		}
 	}
 	
 	public String deleteUser(Long userId) throws ProjectManagerUserException {
-		try {
-			logger.info("In UserDao, deleting user with userId ------" + userId);
+		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : deleteUser() , action : deleting user for given userId , data : "+  userId + "}");
 		userRepository.deleteById(userId);
 		return "Success";
-		}catch(Exception e) {
-			logger.info("Exception occured while deleting the user for userId --- "+ userId + ", error ---" + e.getMessage());
-			throw new ProjectManagerUserException(500, "Error in deleting user");
-		}
 	}
 	
 	public List<User> viewUser() throws ProjectManagerUserException{
-		try {
-			logger.info("In UserDao, fetching all users");
+		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : viewUser() , action : fetching the list of users , data :  , }");
 		return userRepository.findAll();
-		}
-		catch(Exception e) {
-			logger.info("Exception occured while fetching user list -- " + e.getMessage());
-			throw new ProjectManagerUserException(500, "Error in fetching user list");
-		}
 	}
 	
 	public List<User> viewUserByFirstName(String firstName) throws ProjectManagerUserException{
-		try {
-			logger.info("In UserDao, fetching all users with firstName --" + firstName);
+		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : viewUserByFirstName() , action : Fetching user based on firstName  , data : "+  firstName + "}");
 		return userRepository.findAllByFirstName(firstName);
-		}
-		catch(Exception e) {
-			logger.info("Exception occured while fetching user list with first name -- " +firstName +" , error ----" + e.getMessage());
-			throw new ProjectManagerUserException(500, e.getMessage());
-		}
 	}
 	
 	public User getUserByProjectId(Long projectId) throws ProjectManagerUserException{
-		try {
-			logger.info("In UserDao, fetching user with projectId --- " + projectId);
+		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : getUserByProjectId() , action : fetching user based on projectId , data : "+  projectId + "}");
 		return userRepository.findByProjectId(projectId);
-		}
-		catch(Exception e) {
-			logger.info("Exception occured while fetching user with project id -- " +projectId +" , error ----" + e.getMessage());
-			throw new ProjectManagerUserException(500, e.getMessage());
-		}
 	}
 }

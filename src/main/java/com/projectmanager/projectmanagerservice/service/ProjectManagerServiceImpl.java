@@ -36,21 +36,18 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 	
 	@Override
 	public User addUser(UserRecord user) throws ProjectManagerUserException {
-		logger.info("-------------------------------------------------------------");
 		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : addUser() , action : adding user , data : "+  user.toString() + "}");
 			return userDao.addUser(user);	
 	}
 
 	@Override
 	public User updateUser(ProjectManagerRecord user) throws ProjectManagerUserException {
-		logger.info("-------------------------------------------------------------");
 		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : updateUser() , action : updating user , data : "+  user.toString() + "}");
 		return userDao.updateUser(user);
 	}
 
 	@Override
 	public String deleteUser(Long userId) throws ProjectManagerUserException{
-		logger.info("-------------------------------------------------------------");
 		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : deleteUser() , action : deleting user for given userId , data : "+  userId + "}");
 		return userDao.deleteUser(userId);
 		
@@ -58,14 +55,12 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 
 	@Override
 	public List<User> viewUser() throws ProjectManagerUserException {
-		logger.info("-------------------------------------------------------------");
 		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : viewUser() , action : fetching the list of users , data :  , }");
 		return userDao.viewUser();
 	}
 	
 	@Override
 	public List<User> viewUserByFirstName(String firstName) throws ProjectManagerUserException {
-		logger.info("-------------------------------------------------------------");
 		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : viewUserByFirstName() , action : Fetching user based on firstName  , data : "+  firstName + "}");
 		return userDao.viewUserByFirstName(firstName);
 	}
@@ -73,7 +68,6 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 
 	@Override
 	public ProjectManagerRecord addProject(ProjectManagerRecord projectManagerRecord) throws ProjectManagerUserException {
-		logger.info("-------------------------------------------------------------");
 		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : addProject() , action : adding project , data : "+  projectManagerRecord.toString() + "}");
 		try {
 		Project project = projectDao.addProject(projectManagerRecord.project);
@@ -84,38 +78,38 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 		}
 		return projectManagerRecord;
 		} catch(Exception ex) {
-			logger.info("-------------------------------------------------------------");
 			logger.info("{ loggerType : error , loggedBy : " +this.getClass().getSimpleName()+" ,loggingMethod : addProject() , action : adding project , errorMessage : " + ex.getLocalizedMessage() + "}");
 			throw new ProjectManagerUserException(500, "Error in adding project");
 		}
 	}
 
 	@Override
-	public Project updateProject(Project project) {
-		logger.info("-------------------------------------------------------------");
-		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : updateProject() , action : updating project , data : "+  project.toString() + "}");
-		return projectDao.updateProject(project);
+	public ProjectManagerRecord updateProject(ProjectManagerRecord projectManagerRecord) throws ProjectManagerUserException, ProjectManagerTaskException {
+		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : updateProject() , action : updating project , data : "+  projectManagerRecord.toString() + "}");
+		ProjectManagerRecord record = addProject(projectManagerRecord);
+		ProjectRecord pr = record.project;
+		pr.tasks =taskDao.viewTaskByProject(pr.projectId).size();
+		pr.completedTasks = taskDao.getCompletedTasks(pr.projectId).size();
+		record.project = pr;
+		return record;
 	}
 
 	@Override
 	public Project suspendProject(Long projectId) throws ProjectManagerProjectException, ProjectManagerTaskException {
-		logger.info("-------------------------------------------------------------");
 		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : suspendProject() , action : suspending project based on projectId , data : "+  projectId + "}");
 		try {
 		Project project= projectDao.suspendProject(projectId);
 		List<Task> tasks = taskDao.viewTaskByProject(project.getProjectId());
 		tasks.forEach((task) -> {
-			task.setStatus("completed");
+			task.setStatus(true);
 			try {
 			taskDao.updateTask(task);
 			} catch(Exception e) {
-				logger.info("-------------------------------------------------------------");
 				logger.info("{ loggerType : error , loggedBy : " +this.getClass().getSimpleName()+" ,loggingMethod : suspendProject() , action : updating the status of tasks with given projectId , errorMessage : " + e.getLocalizedMessage() + "}");
 			}
 		});
 		return project;
 		}catch(Exception ex) {
-			logger.info("-------------------------------------------------------------");
 			logger.info("{ loggerType : error , loggedBy : " +this.getClass().getSimpleName()+" ,loggingMethod : suspendProject() , action : suspending project based on projectId , errorMessage : " + ex.getLocalizedMessage() + "}");
 			throw new ProjectManagerProjectException(500, "Error in suspending project");
 		}
@@ -124,7 +118,6 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 
 	@Override
 	public List<ProjectRecord> viewProject() throws ProjectManagerProjectException, ProjectManagerTaskException {
-		logger.info("-------------------------------------------------------------");
 		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : viewProject() , action : fetching list of projects , data :  }");
 		try {
 		List<Project> projectList = projectDao.viewProject();
@@ -143,7 +136,6 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 				user = userDao.getUserByProjectId(project.getProjectId());
 				projectRecord.manager = user.getFirstName();
 			} catch (Exception e1) {
-				logger.info("-------------------------------------------------------------");
 				logger.info("{ loggerType : error , loggedBy : " +this.getClass().getSimpleName()+" ,loggingMethod : viewProject() , action : fetching user for given projectId , errorMessage : " + e1.getLocalizedMessage() + "}");
 			}
 			
@@ -151,14 +143,12 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 				projectRecord.tasks =taskDao.viewTaskByProject(project.getProjectId()).size();
 				projectRecord.completedTasks = taskDao.getCompletedTasks(project.getProjectId()).size();
 			} catch (Exception e) {
-				logger.info("-------------------------------------------------------------");
 				logger.info("{ loggerType : error , loggedBy : " +this.getClass().getSimpleName()+" ,loggingMethod : viewProject() , action : fetching total tasks and completed tasks for a given projectId , errorMessage : " + e.getLocalizedMessage() + "}");
 			}
 			projectRecordList.add(projectRecord);		
 		}) ;	
 		return projectRecordList;
 		} catch(Exception ex) {
-			logger.info("-------------------------------------------------------------");
 			logger.info("{ loggerType : error , loggedBy : " +this.getClass().getSimpleName()+" ,loggingMethod : viewProject() , action : fetching project list , errorMessage : " + ex.getLocalizedMessage() + "}");
 			throw new ProjectManagerProjectException(500, "Error in fetching project list");
 		}
@@ -166,14 +156,12 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 	
 	@Override
 	public List<Project> viewProjectByProjectName(String project) {
-		logger.info("-------------------------------------------------------------");
 		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : viewProjectByProjectName() , action : fetching project list based on projectName , data : "+  project + "}");
 		 	return projectDao.viewProjectByProjectName(project);
 	}
 
 	@Override
 	public ProjectManagerRecord addTask(ProjectManagerRecord projectManagerRecord) throws ProjectManagerUserException, ProjectManagerTaskException {
-		logger.info("-------------------------------------------------------------");
 		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : addTask() , action : adding task , data : "+  projectManagerRecord.toString() + "}");
 		try {
 		if(projectManagerRecord.isParent) {
@@ -188,29 +176,42 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 		}
         return projectManagerRecord;
 		} catch(Exception ex) {
-			logger.info("-------------------------------------------------------------");
 			logger.info("{ loggerType : error , loggedBy : " +this.getClass().getSimpleName()+" ,loggingMethod : addTask() , action : adding task , errorMessage : " + ex.getLocalizedMessage() + "}");
 			throw new ProjectManagerTaskException(500, "Error in adding task");
 		}
 	}
 
 	@Override
-	public Task updateTask(Task task) throws ProjectManagerTaskException {	
-		logger.info("-------------------------------------------------------------");
+	public ProjectManagerRecord updateTask(ProjectManagerRecord task) throws ProjectManagerTaskException {
 		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : updateTask() , action : updating task , data : "+  task.toString() + "}");
-		return taskDao.updateTask(task);
+		
+		try {
+			Task t = taskDao.getTaskById(task.taskId);
+			task.project.projectId = t.getProjectId();
+		
+			if(task.isParent) {
+				ParentTask parentTask = taskDao.addParentTask(task);
+				ParentTaskRecord r = new ParentTaskRecord(parentTask.parentId, parentTask.parentTask);
+				task.parentTask = r ;
+			}
+			else {
+			taskDao.addTask(task);
+			}
+		}catch(Exception ex) {
+			logger.info("{ loggerType : error , loggedBy : " +this.getClass().getSimpleName()+" ,loggingMethod : updateTask() , action : adding task , errorMessage : " + ex.getLocalizedMessage() + "}");
+			throw new ProjectManagerTaskException(500, "Error in adding task");
+		}	
+		return task;
 	}
 
 	@Override
 	public Task endTask(Long taskId)  throws ProjectManagerTaskException  {
-		logger.info("-------------------------------------------------------------");
 		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : endTask() , action : ending task based on taskId , data : "+  taskId + "}");
 		return taskDao.endTask(taskId);
 	}
 
 	@Override
 	public List<ProjectManagerRecord> viewTask()  throws ProjectManagerTaskException {
-		logger.info("-------------------------------------------------------------");
 		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : viewTask() , action : fetching list of tasks , data :  }");
 		try {
 		List<Task> tasks = taskDao.viewTask();;
@@ -240,7 +241,6 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 		});
 		return records;
 		} catch(Exception ex) {
-			logger.info("-------------------------------------------------------------");
 			logger.info("{ loggerType : error , loggedBy : " +this.getClass().getSimpleName()+" ,loggingMethod : viewTask() , action : fetching tasks , errorMessage : " + ex.getLocalizedMessage() + "}");
 			throw new ProjectManagerTaskException(500, "Error in fetching tasks");
 		}
@@ -248,7 +248,6 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 	
 	@Override
 	public List<ProjectManagerRecord> viewTaskByProjectId(Long projectId)  throws ProjectManagerTaskException {
-		logger.info("-------------------------------------------------------------");
 		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : viewTaskByProject() , action : fetching list of tasks based on projectId , data : "+projectId+" }");
 		try {
 		List<Task> tasks = taskDao.viewTaskByProject(projectId);
@@ -270,21 +269,24 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 		
 		return records;
 		} catch(Exception ex) {
-			logger.info("-------------------------------------------------------------");
 			logger.info("{ loggerType : error , loggedBy : " +this.getClass().getSimpleName()+" ,loggingMethod : viewTaskByProjectId() , action : fetching tasks for a given projectId , errorMessage : " + ex.getLocalizedMessage() + "}");
 			throw new ProjectManagerTaskException(500, "Error in fetching tasks");
 		}
 	}
 	@Override
 	public List<ParentTask> viewTaskByParent(String parentTask) throws ProjectManagerTaskException  {
-		logger.info("-------------------------------------------------------------");
 		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : viewTaskByParent() , action : fetching list of parent tasks based on taskName , data : " +parentTask+" }");
 		return taskDao.viewTaskByParent(parentTask);
 	}
 	
 	@Override
+	public List<ParentTask> viewParentTask()  {
+		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : viewParentTask() , action : fetching list of parent tasks , data : }");
+		return taskDao.viewParentTask();
+	}
+	
+	@Override
 	public ProjectManagerRecord getTaskByTaskId(Long taskId) {
-		logger.info("-------------------------------------------------------------");
 		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : getTaskById() , action : fetching task based on taskId , data : " +taskId+" }");
 
 		ProjectManagerRecord pr = new ProjectManagerRecord();

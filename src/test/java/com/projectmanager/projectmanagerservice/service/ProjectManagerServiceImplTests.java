@@ -100,12 +100,16 @@ public class ProjectManagerServiceImplTests extends ProjectManagerTest {
 	
 
 	@Test
-	public void test_updateProject() {
-		Project projectResponse = getProjectResponse();
-		Mockito.when(projectDao.updateProject(projectResponse)).thenReturn(projectResponse);
-		Project output = service.updateProject(projectResponse);
+	public void test_updateProject() throws ProjectManagerTaskException, ProjectManagerUserException {
+		List<Task> tasks = getListOfTasks();
+		ProjectManagerRecord projectResponse = getRecord_projectInput();
+		Mockito.when(projectDao.addProject(projectResponse.project)).thenReturn(getProjectResponse());
+		Mockito.when(userDao.updateUser(projectResponse)).thenReturn(getUserResponse());
+	    Mockito.when(taskDao.viewTaskByProject(Mockito.anyLong())).thenReturn(tasks);
+		Mockito.when(taskDao.getCompletedTasks(Mockito.anyLong())).thenReturn(tasks);
+		ProjectManagerRecord output = service.updateProject(projectResponse);
 		Assert.assertNotNull(output);
-		Assert.assertEquals(projectResponse.getProject(), output.getProject());	
+		Assert.assertEquals(projectResponse.project, output.project);	
 	}
 	
 
@@ -160,11 +164,12 @@ public class ProjectManagerServiceImplTests extends ProjectManagerTest {
 
 	@Test
 	public void test_updateTask() throws ProjectManagerTaskException {
-		Task taskResponse = getTaskResponse();
-		Mockito.when(taskDao.updateTask(taskResponse)).thenReturn(taskResponse);
-		Task output = service.updateTask(taskResponse);
+		ProjectManagerRecord taskResponse = getRecord_taskInput();
+		Task task = getTaskResponse();
+		Mockito.when(taskDao.getTaskById(Mockito.anyLong())).thenReturn(task);
+		ProjectManagerRecord output = service.updateTask(taskResponse);
 		Assert.assertNotNull(output);
-		Assert.assertEquals(taskResponse.getTask(), output.getTask());	
+		Assert.assertEquals(taskResponse.task, output.task);	
 	}
 	
 
@@ -173,7 +178,7 @@ public class ProjectManagerServiceImplTests extends ProjectManagerTest {
 		Mockito.when(taskDao.endTask(taskId)).thenReturn(getTaskResponse());
 		Task output = service.endTask(taskId);
 		Assert.assertNotNull(output);
-		Assert.assertEquals("completed", output.getStatus());	
+		Assert.assertEquals(true, output.getStatus());	
 	}
 	
 	@Test

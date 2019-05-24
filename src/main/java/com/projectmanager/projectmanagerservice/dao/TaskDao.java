@@ -24,8 +24,8 @@ public class TaskDao {
 	private ParentTaskRepository parentTaskRepository;
 	
 	public Task addTask(ProjectManagerRecord projectManagerRecord) throws ProjectManagerTaskException {
+		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : addTask() , action : adding task , data : "+  projectManagerRecord.toString() + "}");
 		try {
-		logger.info("In TaskDao, Adding task ----------" + projectManagerRecord.toString());
 		Task task = new Task();
 		task.setTask(projectManagerRecord.task);
 		task.setTaskId(projectManagerRecord.taskId);
@@ -37,7 +37,7 @@ public class TaskDao {
 		task.setStatus(projectManagerRecord.status);
 		return taskRepository.save(task);
 		} catch(Exception ex){
-			logger.info("Exception occured while adding task -- " + ex.getMessage());
+			logger.info("{ loggerType : error , loggedBy : " +this.getClass().getSimpleName()+" ,loggingMethod : addTask() , action : adding task , errorMessage : " + ex.getLocalizedMessage() + "}");
 			throw new ProjectManagerTaskException(500, "Error in adding task");
 		}
 		
@@ -57,21 +57,16 @@ public class TaskDao {
 		
 	}
 	
-	public Task updateTask(Task task) throws ProjectManagerTaskException {
-		try {
-			logger.info("In TaskDao, Updating task ----------" + task.toString());
+	public Task updateTask(Task task)  {
+		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : updateTask() , action : updating task , data : "+  task.toString() + "}");
 		return taskRepository.save(task);
-		} catch(Exception ex){
-			logger.info("Exception occured while updating task -- " + ex.getMessage());
-			throw new ProjectManagerTaskException(500, "Error in adding updating task ");
-		}
 	}
 	
 	public Task endTask(Long taskId) throws ProjectManagerTaskException {
 		try {
 			logger.info("In TaskDao, Updating task status for taskId --------" + taskId);
 			Task task = taskRepository.findByTaskId(taskId);
-			task.setStatus("completed");	
+			task.setStatus(true);	
 		return taskRepository.save(task);
 		}
 		catch(Exception ex){
@@ -80,53 +75,30 @@ public class TaskDao {
 		}
 	}
 	
-	public List<Task> viewTask() throws ProjectManagerTaskException{
-		try {
-			logger.info("In TaskDao, Fetching list of tasks");
+	public List<Task> viewTask(){
+		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : viewTask() , action : fetching list of tasks , data :  }");
 		return taskRepository.findAll();
-		}
-		catch(Exception ex){
-			logger.info("Exception occured while fetching task list  -- " + ex.getMessage());
-			throw new ProjectManagerTaskException(500, "Error in fetching task list");
-		}
 	}
 
-	public List<ParentTask> viewParentTask() throws ProjectManagerTaskException{
-		try {
+	public List<ParentTask> viewParentTask(){
 			logger.info("In TaskDao, Fetching list of parent tasks");
 		return parentTaskRepository.findAll();
-		}
-		catch(Exception ex){
-			logger.info("Exception occured while fetching parent task list  -- " + ex.getMessage());
-			throw new ProjectManagerTaskException(500, "Error in fetching parent task list");
-		}
-	}
-	public List<ParentTask> viewTaskByParent(String parentTask) throws ProjectManagerTaskException{
-		try {
-			logger.info("In TaskDao, Fetching list of parent tasks for task name ---" + parentTask);
-		return parentTaskRepository.findAllByParentTask(parentTask);
-		}
-		catch(Exception ex){
-			logger.info("Exception occured while fetching parent task list  -- " + ex.getMessage());
-			throw new ProjectManagerTaskException(500, "Error in fetching parent task list");
-		}
 	}
 	
-	public List<Task> viewTaskByProject(Long projectId) throws ProjectManagerTaskException{
-		try {
-			logger.info("In TaskDao, Fetching list of tasks for projectId ---" + projectId);
+	public List<ParentTask> viewTaskByParent(String parentTask){
+		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : viewTaskByParent() , action : fetching list of parent tasks based on taskName , data : " +parentTask+" }");
+		return parentTaskRepository.findAllByParentTask(parentTask);
+	}
+	
+	public List<Task> viewTaskByProject(Long projectId) {
+		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : viewTaskByProject() , action : fetching list of tasks based on projectId , data : "+projectId+" }");
 		return taskRepository.findAllByProjectId(projectId);
-		}
-		catch(Exception ex){
-			logger.info("Exception occured while fetching task list for projectId -- " + projectId  +" , error ---" + ex.getMessage());
-			throw new ProjectManagerTaskException(500, "Error in fetching task list");
-		}
 	}
 	
 	public List<Task> getCompletedTasks(Long projectId) throws ProjectManagerTaskException{
 		try {
 			logger.info("In TaskDao, Fetching list of completed tasks for projectId ---" + projectId);
-			String status = "completed";
+			boolean status = true;
 		return taskRepository.findAllByProjectIdAndStatus(projectId, status);
 		}
 		catch(Exception ex){

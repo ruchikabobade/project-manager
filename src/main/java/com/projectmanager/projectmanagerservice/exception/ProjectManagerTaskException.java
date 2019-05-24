@@ -8,7 +8,7 @@ public class ProjectManagerTaskException extends Exception{
 	int errorCode;
 	String message;
 	
-	public ProjectManagerTaskException() {}
+//	public ProjectManagerTaskException() {}
 	
 	public ProjectManagerTaskException(int errorCode, String message) {
 		this.errorCode = errorCode;

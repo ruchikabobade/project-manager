@@ -37,13 +37,13 @@ public class Task {
 	int priority;
 	
 	@Column(name="status")
-	String status;
+	Boolean status;
 	
 	public Task() {
 		
 	}
 	
-	public Task(Long parentId, Long projectId, String task,Date startDate, Date endDate, int priority, String status) {
+	public Task(Long parentId, Long projectId, String task,Date startDate, Date endDate, int priority, Boolean status) {
 		this.parentId = parentId;
 		this.projectId = projectId;
 		this.startDate = startDate;
@@ -108,11 +108,11 @@ public class Task {
 		this.priority = priority;
 	}
 
-	public String getStatus() {
+	public Boolean getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(Boolean status) {
 		this.status = status;
 	}
 }

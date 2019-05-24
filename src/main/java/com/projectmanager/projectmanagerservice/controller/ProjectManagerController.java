@@ -30,6 +30,7 @@ import com.projectmanager.projectmanagerservice.service.ProjectManagerService;
 public class ProjectManagerController {
 
 	private Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	
 	@Autowired
 	private ProjectManagerService service;
 	
@@ -77,7 +78,7 @@ public class ProjectManagerController {
 	}
 	
 	@PutMapping(path="/projectmanager/service/project/updateProject")
-	public Project updateProject(@RequestBody Project project) {
+	public ProjectManagerRecord updateProject(@RequestBody ProjectManagerRecord project) throws ProjectManagerUserException, ProjectManagerTaskException {
 		logger.info("-------------------------------------------------------------");
 		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : updateProject() , action : updating project , data : "+  project.toString() + "}");
 		return service.updateProject(project);
@@ -115,7 +116,7 @@ public class ProjectManagerController {
 	public ProjectManagerRecord updateTask(@RequestBody ProjectManagerRecord task) throws ProjectManagerTaskException, ProjectManagerUserException {
 		logger.info("-------------------------------------------------------------");
 		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : updateTask() , action : updating task , data : "+  task.toString() + "}");
-		return service.addTask(task);
+		return service.updateTask(task);
 	}
 	
 	@DeleteMapping(path="/projectmanager/service/task/endTask/{taskId}")
@@ -153,4 +154,10 @@ public class ProjectManagerController {
 		return service.viewTaskByProjectId(projectId);
 	}
 	
+	@GetMapping(path="/projectmanager/service/task/viewParentTask")
+	public List<ParentTask> viewParentTask() throws ProjectManagerTaskException{
+		logger.info("-------------------------------------------------------------");
+		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : viewTaskByParent() , action : fetching list of parent tasks based on taskName , data :  }");
+		return service.viewParentTask();
+	}
 }

@@ -12,6 +12,6 @@ import com.projectmanager.projectmanagerservice.entity.Task;
 public interface TaskRepository extends JpaRepository<Task, Long>{
 	 public List<Task> findAllByProjectId(@Param(value = "projectId") Long projectId);
 	 public List<Task> findAllByProjectIdAndStatus(@Param(value = "projectId") Long projectId,
-			 @Param(value = "status") String status);
+			 @Param(value = "status") boolean status);
 	 public Task findByTaskId(@Param(value = "taskId") Long taskId);
 }

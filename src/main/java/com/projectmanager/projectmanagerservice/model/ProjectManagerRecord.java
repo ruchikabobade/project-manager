@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class ProjectManagerRecord {
 	
-	public ProjectManagerRecord(Long taskId, String task, Date startDate, Date endDate, int priority, String status,
+	public ProjectManagerRecord(Long taskId, String task, Date startDate, Date endDate, int priority, boolean status,
 			boolean isParent, ParentTaskRecord parentTask, UserRecord user, ProjectRecord project) {
 		super();
 		this.taskId = taskId;
@@ -28,7 +28,7 @@ public class ProjectManagerRecord {
 	public Date startDate = null;
 	public Date endDate = null;
 	public int priority = 0;
-	public String status = "";
+	public boolean status = false;
 	public boolean isParent = false;
 	public ParentTaskRecord parentTask;
 	public UserRecord user;

@@ -8,7 +8,7 @@ public class ProjectManagerProjectException extends Exception {
 	int errorCode;
 	String message;
 	
-	public ProjectManagerProjectException() {}
+//	public ProjectManagerProjectException() {}
 	
 	public ProjectManagerProjectException(int errorCode, String message) {
 		this.errorCode = errorCode;

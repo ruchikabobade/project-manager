@@ -8,7 +8,7 @@ public class ProjectManagerUserException extends Exception {
 	int errorCode;
 	String message;
 	
-	public ProjectManagerUserException() {}
+//	public ProjectManagerUserException() {}
 	
 	public ProjectManagerUserException(int errorCode, String message) {
 		this.errorCode = errorCode;
