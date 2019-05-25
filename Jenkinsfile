@@ -28,15 +28,6 @@ pipeline {
                 }
           }
           }
-            
-            
-        stage('Building image') {
-      			steps{
-       				 script {
-          				docker.build("ruchikadocker/project-manager-service")
-        			}
-      				}
-   			 }
         
    }
 }
