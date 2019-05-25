@@ -22,7 +22,7 @@ node {
             app = docker.build("ruchikadocker/project-manager-service", "-f ./Dockerfile .")
         }
         stage('Push image') {
-            docker.withRegistry('https://registry.hub.docker.com', 'my-docker-hub') {
+            docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
                 app.push("${env.BUILD_NUMBER}")
                 app.push("latest")
             }
