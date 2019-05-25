@@ -5,12 +5,9 @@ node {
             checkout scm
         }
         stage('Tests') {
-                         try {
                                 sh './gradlew clean test --no-daemon'
-                            } finally {
-                                junit '**/build/test-results/test/*.xml'
-                            }
-                        }
+
+
          }
         stage('Build Jar') {
             sh 'bash ./build.sh'
