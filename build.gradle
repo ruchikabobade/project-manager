@@ -1,0 +1,32 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+
+group = 'com.projectmanager'
+version = '0.0.1-SNAPSHOT'
+
+description = """project-manager-service"""
+
+sourceCompatibility = 1.5
+targetCompatibility = 1.5
+tasks.withType(JavaCompile) {
+	options.encoding = 'UTF-8'
+}
+
+
+
+repositories {
+        
+     maven { url "http://repo.maven.apache.org/maven2" }
+}
+dependencies {
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version:'2.1.4.RELEASE'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version:'2.1.4.RELEASE'
+    compile(group: 'mysql', name: 'mysql-connector-java', version:'8.0.15') {
+exclude(module: 'protobuf-java')
+    }
+    compile group: 'org.hibernate.javax.persistence', name: 'hibernate-jpa-2.1-api', version:'1.0.2'
+    compile group: 'commons-logging', name: 'commons-logging', version:'1.2'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version:'2.1.1.RELEASE'
+    runtime group: 'com.h2database', name: 'h2', version:'1.4.199'
+    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version:'2.1.4.RELEASE'
+}
