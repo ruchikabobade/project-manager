@@ -9,7 +9,7 @@ public class UserRecord {
 		this.lastName = lastName;
 		this.employeeId = employeeId;
 	}
-	public Long userId = null;
+	public Long userId = 0l;
 	public String firstName = "";
 	public String lastName = "";
 	public String employeeId = "";

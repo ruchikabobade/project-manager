@@ -12,7 +12,7 @@ public class ParentTaskRecord {
 	public ParentTaskRecord() {
 		// TODO Auto-generated constructor stub
 	}
-	public Long parentId = null;
+	public Long parentId = 0l;
 	public String parentTask = "";
 	
 	@Override
