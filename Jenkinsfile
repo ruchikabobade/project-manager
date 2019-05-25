@@ -5,9 +5,7 @@ node {
             checkout scm
         }
         stage('Tests') {
-                                sh './gradlew clean test --no-daemon'
-
-
+             sh './gradlew clean test --no-daemon'
          }
         stage('Build Jar') {
             sh 'bash ./build.sh'
