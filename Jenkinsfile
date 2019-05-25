@@ -4,6 +4,17 @@ node {
         stage('Clone repository') {
             checkout scm
         }
+        stage('Tests') {
+                    steps {
+                        script {
+                            try {
+                                sh './gradlew clean test --no-daemon'
+                            } finally {
+                                junit '**/build/test-results/test/*.xml'
+                            }
+                        }
+                    }
+         }
         stage('Build Jar') {
             sh 'bash ./build.sh'
         }
