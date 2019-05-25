@@ -1,33 +1,24 @@
-pipeline {
-
-		environment {
-    			registry = "ruchikadocker/project-manager-service"
-    			registryCredential = "dockerhub"
-			}
-			
-    agent {
-        docker {
-            image 'maven:3-alpine'
-            args '-v /root/.m2:/root/.m2'
+node {
+    try {
+        def app
+        stage('Clone repository') {
+            checkout scm
+        }
+        stage('Build Jar') {
+            sh 'bash ./build.sh'
+        }
+        stage('Build Docker image') {
+            app = docker.build("ruchikadocker/project-manager-service", "-f ./Dockerfile .")
+        }
+        stage('Push image') {
+            docker.withRegistry('https://registry.hub.docker.com', 'my-docker-hub') {
+                app.push("${env.BUILD_NUMBER}")
+                app.push("latest")
+            }
+        }
+    } finally {
+        stage('cleanup') {
+            echo "doing some cleanup..."
         }
     }
-    
-    stages {
-        stage('Build') {
-            steps {
-                sh 'mvn -B -DskipTests clean package'
-            }
-        }
-        stage('Test') { 
-            steps {
-                sh 'mvn test' 
-            }
-            post {
-                always {
-                    junit 'target/surefire-reports/*.xml' 
-                }
-          }
-          }
-        
-   }
 }
