@@ -1,4 +1,9 @@
 pipeline {
+
+environment {
+    registry = "ruchikadocker/project-manager-service"
+    registryCredential = ‘dockerhub’
+}
     agent {
         docker {
             image 'maven:3-alpine'
@@ -19,7 +24,16 @@ pipeline {
                 always {
                     junit 'target/surefire-reports/*.xml' 
                 }
-            }
-        }
-    }
+          }
+            
+            
+        stage('Building image') {
+      			steps{
+       				 script {
+          				docker.build registry + ":$BUILD_NUMBER"
+        			}
+      				}
+   			 }
+        
+   }
 }

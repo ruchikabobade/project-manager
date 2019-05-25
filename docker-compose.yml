@@ -18,7 +18,7 @@ services:
     depends_on:
       - mysql-docker-container
     ports:
-      - 8087:8080
+      - 9001:8080
     volumes:
       - /data/spring-boot-app
  
