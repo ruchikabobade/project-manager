@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.projectmanager.projectmanagerservice.entity.Project;
-import com.projectmanager.projectmanagerservice.exception.ProjectManagerProjectException;
 import com.projectmanager.projectmanagerservice.exception.ProjectManagerUserException;
 import com.projectmanager.projectmanagerservice.model.ProjectRecord;
 import com.projectmanager.projectmanagerservice.repository.ProjectRepository;

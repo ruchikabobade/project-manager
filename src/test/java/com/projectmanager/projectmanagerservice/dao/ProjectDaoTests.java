@@ -9,14 +9,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-
 import com.projectmanager.projectmanagerservice.ProjectManagerTest;
 import com.projectmanager.projectmanagerservice.entity.Project;
-import com.projectmanager.projectmanagerservice.entity.User;
 import com.projectmanager.projectmanagerservice.exception.ProjectManagerUserException;
 import com.projectmanager.projectmanagerservice.model.ProjectRecord;
 import com.projectmanager.projectmanagerservice.repository.ProjectRepository;
-import com.projectmanager.projectmanagerservice.repository.UserRepository;
 
 @RunWith(MockitoJUnitRunner.Silent.class)
 public class ProjectDaoTests extends ProjectManagerTest{
@@ -62,7 +59,6 @@ public class ProjectDaoTests extends ProjectManagerTest{
 		Project projectResponse = getProjectResponse();
 		Mockito.when(projectRepository.findByProjectId(Mockito.any())).thenReturn(projectResponse);
 		Mockito.when(projectRepository.save(Mockito.any(Project.class))).thenReturn(projectResponse);
-		Mockito.doNothing().when(projectRepository).deleteById(projectId);
 		Project output = projectDao.suspendProject(projectId);
 		Assert.assertNotNull(output);
 		Assert.assertEquals(true, output.getStatus());	
@@ -96,23 +92,25 @@ public class ProjectDaoTests extends ProjectManagerTest{
 		Assert.assertEquals(project.getProject(), output.getProject());	
 	}
 	
-//	@Test
-//	public void test_addProject_error() throws ProjectManagerUserException {
-//		String exception = "java.lang.NullPointerException";
-//		try {
-//			projectDao.addProject(null);
-//		}catch(Exception ex) {
-//			 Assert.assertEquals(exception, ex.toString());	
-//		}
-//	}
-//	
-//	@Test
-//	public void test_updateProject_error() {
-//		String exception = "java.lang.NullPointerException";
-//		try {
-//			projectDao.updateProject(null);
-//		}catch(Exception ex) {
-//			 Assert.assertEquals(exception, ex.toString());	
-//		}
-//	}
+	@Test
+	public void test_addProject_error() throws ProjectManagerUserException {
+		Mockito.when(projectRepository.save(Mockito.any(Project.class))).thenThrow(new RuntimeException());
+		String exception = "com.projectmanager.projectmanagerservice.exception.ProjectManagerUserException";
+		try {
+			projectDao.addProject(getRecord_projectInput().project);
+		}catch(Exception ex) {
+			 Assert.assertEquals(exception, ex.toString());	
+		}
+	}
+	
+	@Test
+	public void test_suspendProject_error() {
+		String exception = "com.projectmanager.projectmanagerservice.exception.ProjectManagerUserException";
+		Mockito.when(projectRepository.findByProjectId(Mockito.anyLong())).thenThrow(new RuntimeException());
+		try {
+			projectDao.suspendProject(projectId);
+		}catch(Exception ex) {
+			 Assert.assertEquals(exception, ex.toString());	
+		}
+	}
 }

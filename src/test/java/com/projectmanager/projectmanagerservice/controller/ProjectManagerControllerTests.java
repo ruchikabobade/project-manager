@@ -142,10 +142,10 @@ public class ProjectManagerControllerTests extends ProjectManagerTest {
 	@Test
 	public void test_updateTask() throws ProjectManagerTaskException, ProjectManagerUserException {
 		ProjectManagerRecord taskResponse = getRecord_taskInput();
-		Mockito.when(service.addTask(Mockito.any(ProjectManagerRecord.class))).thenReturn(getRecord_task());
+		Mockito.when(service.updateTask(Mockito.any(ProjectManagerRecord.class))).thenReturn(getRecord_task());
 		ProjectManagerRecord output = projectManagerController.updateTask(taskResponse);
-		//Assert.assertNotNull(output);
-		//Assert.assertEquals(taskResponse.task, output.task);
+		Assert.assertNotNull(output);
+		Assert.assertEquals(taskResponse.task, output.task);
 	}
 	
 
@@ -188,6 +188,15 @@ public class ProjectManagerControllerTests extends ProjectManagerTest {
 		List<ProjectManagerRecord> tasks =  getRecords_task();
 		Mockito.when(service.viewTaskByProjectId(Mockito.anyLong())).thenReturn( tasks);
 		List<ProjectManagerRecord> output = projectManagerController.viewTaskByProject(1l);
+		Assert.assertNotNull(output);
+		Assert.assertEquals(tasks.size(), output.size());	
+	}
+	
+	@Test
+	public void test_viewParentTask() throws ProjectManagerTaskException {
+		List<ParentTask> tasks =  getListOfParentTasks();
+		Mockito.when(service.viewParentTask()).thenReturn(tasks);
+		List<ParentTask> output = projectManagerController.viewParentTask();
 		Assert.assertNotNull(output);
 		Assert.assertEquals(tasks.size(), output.size());	
 	}

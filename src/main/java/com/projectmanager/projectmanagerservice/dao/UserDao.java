@@ -41,11 +41,9 @@ public class UserDao {
 		user.setEmployeeId(projectManagerRecord.user.employeeId);
 		user.setProjectId(projectManagerRecord.project.projectId);
 		user.setUserId(projectManagerRecord.user.userId);
-		if(projectManagerRecord.taskId== null) {
-			user.setTaskId(projectManagerRecord.parentTask.parentId);
+		if(projectManagerRecord.taskId != 0) {
+			user.setTaskId(projectManagerRecord.taskId);
 		}
-		else
-		user.setTaskId(projectManagerRecord.taskId);
 		return userRepository.save(user);
 		}catch(Exception e) {
 			logger.info("{ loggerType : error , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : updateUser() , action : updating user , errorMessage : " +e.getLocalizedMessage() + "}");

@@ -100,13 +100,9 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 		try {
 		Project project= projectDao.suspendProject(projectId);
 		List<Task> tasks = taskDao.viewTaskByProject(project.getProjectId());
-		tasks.forEach((task) -> {
-			task.setStatus(true);
-			try {
+		tasks.forEach((task) -> {		
+				task.setStatus(true);
 			taskDao.updateTask(task);
-			} catch(Exception e) {
-				logger.info("{ loggerType : error , loggedBy : " +this.getClass().getSimpleName()+" ,loggingMethod : suspendProject() , action : updating the status of tasks with given projectId , errorMessage : " + e.getLocalizedMessage() + "}");
-			}
 		});
 		return project;
 		}catch(Exception ex) {
@@ -121,7 +117,7 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : viewProject() , action : fetching list of projects , data :  }");
 		try {
 		List<Project> projectList = projectDao.viewProject();
-		List<ProjectRecord> projectRecordList = new ArrayList();
+		List<ProjectRecord> projectRecordList = new ArrayList<ProjectRecord>();
 		projectList.forEach((project) ->{
 			ProjectRecord projectRecord = new ProjectRecord();
 			projectRecord.projectId = project.getProjectId();
@@ -186,22 +182,21 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : updateTask() , action : updating task , data : "+  task.toString() + "}");
 		
 		try {
-			Task t = taskDao.getTaskById(task.taskId);
-			task.project.projectId = t.getProjectId();
-		
 			if(task.isParent) {
 				ParentTask parentTask = taskDao.addParentTask(task);
 				ParentTaskRecord r = new ParentTaskRecord(parentTask.parentId, parentTask.parentTask);
 				task.parentTask = r ;
-			}
-			else {
+			}else {
+				Task t = taskDao.getTaskById(task.taskId);
+				task.project.projectId = t.getProjectId();
 			taskDao.addTask(task);
 			}
+			
+			return task;
 		}catch(Exception ex) {
 			logger.info("{ loggerType : error , loggedBy : " +this.getClass().getSimpleName()+" ,loggingMethod : updateTask() , action : adding task , errorMessage : " + ex.getLocalizedMessage() + "}");
 			throw new ProjectManagerTaskException(500, "Error in adding task");
-		}	
-		return task;
+		}		
 	}
 
 	@Override
@@ -216,7 +211,7 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 		try {
 		List<Task> tasks = taskDao.viewTask();;
 		List<ParentTask> parentTasks= taskDao.viewParentTask();
-		List<ProjectManagerRecord> records =new ArrayList();
+		List<ProjectManagerRecord> records =new ArrayList<ProjectManagerRecord>();
 		 
 		tasks.forEach((task) -> {
 			ProjectManagerRecord record = new ProjectManagerRecord();
@@ -251,7 +246,7 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 		logger.info("{ loggerType : info , loggedBy : " +this.getClass().getSimpleName()+" loggingMethod : viewTaskByProject() , action : fetching list of tasks based on projectId , data : "+projectId+" }");
 		try {
 		List<Task> tasks = taskDao.viewTaskByProject(projectId);
-		List<ProjectManagerRecord> records =new ArrayList();
+		List<ProjectManagerRecord> records =new ArrayList<ProjectManagerRecord>();
 		 
 		tasks.forEach((task) -> {
 			ProjectManagerRecord record = new ProjectManagerRecord();
