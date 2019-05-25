@@ -2,7 +2,7 @@ pipeline {
 
 		environment {
     			registry = "ruchikadocker/project-manager-service"
-    			registryCredential = ‘dockerhub’
+    			registryCredential = "dockerhub"
 			}
 			
     agent {
@@ -33,7 +33,7 @@ pipeline {
         stage('Building image') {
       			steps{
        				 script {
-          				docker.build registry + ":$BUILD_NUMBER"
+          				docker.build("ruchikadocker/project-manager-service")
         			}
       				}
    			 }
